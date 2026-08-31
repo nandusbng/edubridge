@@ -632,7 +632,7 @@ window.loadAnalytics = async function() {
                     <img src="${window.getAvatarUrl(s.email, 40)}" class="size-10 rounded-full object-cover bg-amber-500">
                     <div><p class="text-sm font-bold truncate max-w-[120px]">${displayName}</p><p class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Low Engagement</p></div>
                 </div>
-                <div class="grid grid-cols-2 gap-2 text-[11px] font-bold">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] font-bold">
                     <div class="p-2 bg-white/50 dark:bg-slate-800/50 rounded-lg"><p class="text-slate-400">Notes Read</p><p>${s.analytics?.notes_viewed || 0}</p></div>
                     <div class="p-2 bg-white/50 dark:bg-slate-800/50 rounded-lg"><p class="text-slate-400">Time Spent</p><p>${s.analytics?.time_spent || 0}m</p></div>
                 </div>
@@ -652,7 +652,7 @@ window.loadAnalytics = async function() {
                     <img src="${window.getAvatarUrl(s.email, 40)}" class="size-10 rounded-full object-cover bg-violet-500">
                     <div><p class="text-sm font-bold truncate max-w-[120px]">${displayName}</p><p class="text-[10px] text-violet-600 uppercase font-black tracking-widest leading-none">Mentor: ${mentor?.name || 'Assigned'}</p></div>
                 </div>
-                <div class="grid grid-cols-2 gap-2 text-[11px] font-bold">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] font-bold">
                     <div class="p-2 bg-white/50 dark:bg-slate-800/50 rounded-lg"><p class="text-slate-400">Sync</p><p class="text-emerald-500">Connected</p></div>
                     <div class="p-2 bg-white/50 dark:bg-slate-800/50 rounded-lg"><p class="text-slate-400">Activity</p><p>${formattedActivity}</p></div>
                 </div>
@@ -1791,7 +1791,7 @@ window.triggerAuditDetail = async function(id) {
                         </div>
 
                         <!-- Mentee Profile Grid -->
-                        <div class="grid grid-cols-2 gap-x-6 gap-y-4 mb-8 pt-6 border-t border-indigo-100 dark:border-indigo-900/30">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-8 pt-6 border-t border-indigo-100 dark:border-indigo-900/30">
                             ${field('Register Number', mentee.register_number || log.mentee_reg_no)}
                             ${field('Student Email', mentee.email || log.mentee_email)}
                             ${field('Branch / Class', mentee.branch || log.mentee_branch)}
@@ -1800,7 +1800,7 @@ window.triggerAuditDetail = async function(id) {
                         </div>
 
                         <!-- Mentee Session Audit -->
-                        <div class="grid grid-cols-2 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-indigo-50 dark:border-slate-800 gap-x-6 gap-y-6 mb-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-indigo-50 dark:border-slate-800 gap-x-6 gap-y-6 mb-8">
                             ${field('Submission Date', log.mentee_date)}
                             ${field('Mode of Help', `<span class="capitalize">${log.mentee_mode || 'N/A'}</span>`)}
                             ${field('Session Duration', log.mentee_duration)}
@@ -1832,7 +1832,7 @@ window.triggerAuditDetail = async function(id) {
                         </div>
 
                         <!-- Mentor Profile Grid -->
-                        <div class="grid grid-cols-2 gap-x-6 gap-y-4 mb-8 pt-6 border-t border-emerald-100 dark:border-emerald-900/30">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-8 pt-6 border-t border-emerald-100 dark:border-emerald-900/30">
                             ${field('Register Number', mentor.register_number || log.mentor_reg_no)}
                             ${field('Mentor Email', mentor.email || log.mentor_email)}
                             ${field('Mentor Branch', mentor.branch || log.mentor_branch)}
@@ -1842,7 +1842,7 @@ window.triggerAuditDetail = async function(id) {
 
                         ${log.mentee_status === 'completed' ? `
                             <!-- Mentor Session Audit -->
-                            <div class="grid grid-cols-2 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-emerald-50 dark:border-slate-800 gap-x-6 gap-y-6 mb-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-emerald-50 dark:border-slate-800 gap-x-6 gap-y-6 mb-8">
                                 ${field('Verification Date', log.mentor_date)}
                                 ${field('Verification Mode', `<span class="capitalize">${log.mentor_mode || 'N/A'}</span>`)}
                                 ${field('Validated Duration', log.mentor_duration)}
