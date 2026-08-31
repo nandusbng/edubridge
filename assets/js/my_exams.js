@@ -157,7 +157,7 @@ async function loadMenteePerformance() {
                                 </div>
                             </div>
                             
-                            <div class="grid grid-cols-2 lg:grid-cols-1 gap-3">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3">
                                 <div class="bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl p-4 border border-emerald-100/50 dark:border-emerald-800/30">
                                     <p class="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mb-1">Success Rate</p>
                                     <p class="text-2xl font-black text-slate-900 dark:text-white">${avgPercentage}%</p>

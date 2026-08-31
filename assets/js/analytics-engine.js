@@ -299,7 +299,7 @@ window.addEventListener('ShowCandidateDetails', (e) => {
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     <div class="bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded-2xl text-center border border-emerald-100 dark:border-emerald-900/30">
                         <p class="text-3xl font-black text-emerald-600">${att.score !== null ? att.score : '-'}</p>
                         <p class="text-[10px] font-black uppercase text-emerald-400 tracking-widest mt-1">Score / ${exam.total_marks}</p>
