@@ -1,0 +1,19 @@
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    # Runs at 00:00 every 3 days to prevent the 7-15 day inactivity pause
+    - cron: '0 0 */3 * *'
+  workflow_dispatch: # Allows you to run it manually from the Actions tab if needed
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase Database
+        run: |
+          echo "Pinging Supabase to prevent inactivity pause..."
+          curl -s -o /dev/null -w "%{http_code}" -X GET 'https://wjiajmsemeqhcswfpevu.supabase.co/rest/v1/users?select=id&limit=1' \
+          -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndqaWFqbXNlbWVxaGNzd2ZwZXZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTMwNzIsImV4cCI6MjA5MDU2OTA3Mn0.6M17OqhV3MsiZhUq-HAn90KDGMk15RkB24L_NhGI06A" \
+          -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndqaWFqbXNlbWVxaGNzd2ZwZXZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTMwNzIsImV4cCI6MjA5MDU2OTA3Mn0.6M17OqhV3MsiZhUq-HAn90KDGMk15RkB24L_NhGI06A"
+          echo -e "\nPing complete!"
