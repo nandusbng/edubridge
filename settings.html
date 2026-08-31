@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EduBridge - Settings</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet"/>
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: 'liga';
+        }
+        /* Custom scrollbar for clean look */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0056b2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1923",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 h-screen overflow-hidden flex flex-col">
+    <!-- Header -->
+    <header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 px-6 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-4">
+            <a href="dashboard.html" class="flex items-center gap-4 hover:opacity-80 transition-opacity">
+                <div class="bg-primary rounded-lg size-10 flex items-center justify-center text-white"><span class="material-symbols-outlined">school</span></div>
+                <div>
+                    <h1 class="text-xl font-bold text-blue-800 dark:text-blue-300 leading-none">EduBridge</h1>
+                    <p class="text-slate-500 text-xs font-medium mt-1">Platform Settings</p>
+                </div>
+            </a>
+        </div>
+        <div class="flex items-center gap-4">
+             <button onclick="window.history.back()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl text-sm font-bold hover:bg-slate-200 transition-all">
+                <span class="material-symbols-outlined text-[18px]">arrow_back</span> Back
+             </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto p-6 lg:p-12 bg-slate-50 dark:bg-slate-900/50 flex justify-center">
+            <div class="max-w-3xl w-full space-y-10">
+                
+                <!-- Profile Section -->
+                <section class="space-y-6">
+                    <div class="flex items-center gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
+                        <div class="size-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-2xl">account_circle</span>
+                        </div>
+                        <h2 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">Profile Identity</h2>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-sm space-y-8">
+                        <div class="flex flex-col md:flex-row gap-8 items-start md:items-center">
+                            <div class="relative group shrink-0">
+                                <div id="settings-avatar" class="size-24 rounded-3xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 flex items-center justify-center text-3xl font-black border-2 border-white dark:border-slate-800 shadow-sm">U</div>
+                                <button class="absolute -bottom-2 -right-2 size-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center text-slate-500 hover:text-primary shadow-lg hover:scale-110 transition-all">
+                                    <span class="material-symbols-outlined text-[20px]">edit_square</span>
+                                </button>
+                            </div>
+                            <div class="flex-1 space-y-4 w-full">
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Display Name</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" id="settings-display-name" class="flex-1 px-5 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm outline-none focus:border-primary transition-all" placeholder="Enter your name">
+                                        <button id="save-name-btn" class="bg-primary text-white px-6 py-3 rounded-2xl font-black text-sm hover:opacity-90 transition-all">Save</button>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Account Email</label>
+                                        <input type="text" id="settings-email" disabled class="w-full px-5 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-400 cursor-not-allowed">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Portal Access</label>
+                                        <div id="settings-role-badge" class="px-5 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 text-xs font-black text-slate-500 uppercase tracking-widest flex items-center justify-center">Student</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Extra Student Profile Settings -->
+                        <div id="student-only-settings" class="hidden pt-6 border-t border-slate-200 dark:border-slate-800">
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-4">Academic Details</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-min">
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Class / Section</label>
+                                    <input type="text" id="settings-section" class="w-full px-5 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm outline-none focus:border-primary transition-all" placeholder="e.g. CSE-A">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Year</label>
+                                    <select id="settings-year" class="w-full px-5 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm outline-none focus:border-primary transition-all">
+                                        <option value="1">1st Year</option>
+                                        <option value="2">2nd Year</option>
+                                        <option value="3">3rd Year</option>
+                                        <option value="4">4th Year</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Faculty Advisor</label>
+                                    <input type="text" id="settings-faculty-advisor" class="w-full px-5 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm outline-none focus:border-primary transition-all" placeholder="Advisor Name">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Stay Type</label>
+                                    <select id="settings-hostler" class="w-full px-5 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm outline-none focus:border-primary transition-all">
+                                        <option value="Day Scholar">Day Scholar</option>
+                                        <option value="Hosteller">Hosteller</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex justify-end mt-4">
+                                <button id="save-academic-btn" class="bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 px-6 py-2.5 rounded-xl font-black text-sm hover:opacity-90 transition-all">Update Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Preferences Section -->
+                <section class="space-y-6">
+                    <div class="flex items-center gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
+                        <div class="size-12 rounded-2xl bg-orange-50 dark:bg-orange-900/20 text-orange-500 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-2xl">palette</span>
+                        </div>
+                        <h2 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">App Experience</h2>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm divide-y divide-slate-100 dark:divide-slate-800">
+                        <!-- Dark Mode Toggle -->
+                        <div class="p-6 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                            <div class="flex items-center gap-4">
+                                <div class="size-10 rounded-xl bg-orange-50 dark:bg-orange-900/20 text-orange-500 flex items-center justify-center"><span class="material-symbols-outlined">dark_mode</span></div>
+                                <div>
+                                    <h4 class="font-bold text-sm">Theme Appearance</h4>
+                                    <p class="text-[10px] text-slate-500 font-medium">Switch between light and dark modes</p>
+                                </div>
+                            </div>
+                            <button id="theme-switch-btn" class="relative w-12 h-6 bg-slate-200 dark:bg-primary/40 rounded-full p-1 transition-colors duration-300">
+                                <div class="size-4 bg-white dark:bg-primary rounded-full shadow-sm dark:translate-x-6 transition-transform"></div>
+                            </button>
+                        </div>
+                        
+                        <!-- Notifications -->
+                        <div class="p-6 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                            <div class="flex items-center gap-4">
+                                <div class="size-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center"><span class="material-symbols-outlined">notifications_active</span></div>
+                                <div>
+                                    <h4 class="font-bold text-sm">Push Notifications</h4>
+                                    <p class="text-[10px] text-slate-500 font-medium">Alerts for new messages or sessions</p>
+                                </div>
+                            </div>
+                            <button class="relative w-12 h-6 bg-primary rounded-full p-1 transition-colors duration-300">
+                                <div class="size-4 bg-white translate-x-6 rounded-full shadow-sm transition-transform"></div>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Support Section -->
+                <section class="space-y-6">
+                    <div class="flex items-center gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
+                        <div class="size-12 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-2xl">help_center</span>
+                        </div>
+                        <h2 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">Help & Support</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <a href="#" class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:border-primary transition-all flex items-center gap-4 group">
+                            <div class="size-12 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center text-slate-400 group-hover:text-primary group-hover:bg-primary/5 transition-all"><span class="material-symbols-outlined">description</span></div>
+                            <div>
+                                <h4 class="font-bold text-sm">Knowledge Base</h4>
+                                <p class="text-[10px] text-slate-500 font-medium">Documentation and help guides</p>
+                            </div>
+                        </a>
+                        <a href="chat.html" class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:border-primary transition-all flex items-center gap-4 group">
+                            <div class="size-12 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center text-slate-400 group-hover:text-primary group-hover:bg-primary/5 transition-all"><span class="material-symbols-outlined">support_agent</span></div>
+                            <div>
+                                <h4 class="font-bold text-sm">Contact Support</h4>
+                                <p class="text-[10px] text-slate-500 font-medium">Get in touch with an administrator</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Debug Section (For testing purposes) -->
+                <section class="space-y-6">
+                    <div class="flex items-center gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
+                        <div class="size-12 rounded-2xl bg-purple-50 dark:bg-purple-900/20 text-purple-500 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-2xl">bug_report</span>
+                        </div>
+                        <h2 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">System Testing</h2>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="size-10 rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-500 flex items-center justify-center"><span class="material-symbols-outlined">restart_alt</span></div>
+                                <div>
+                                    <h4 class="font-bold text-sm">Wipe Engagement Cache</h4>
+                                    <p class="text-[10px] text-slate-500 font-medium">Resets local time-spent tracking for streak system verification.</p>
+                                </div>
+                            </div>
+                            <button id="debug-reset-streak" class="px-5 py-2.5 bg-purple-600 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-purple-700 transition-all shadow-lg shadow-purple-200 dark:shadow-none whitespace-nowrap">
+                                Reset Locally
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Destructive Actions -->
+                <div class="pt-10">
+                    <button onclick="supabase.auth.signOut().then(()=>window.location.href='/index.html')" class="w-full p-6 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-3xl flex items-center justify-center gap-3 text-red-600 font-black hover:bg-red-100 transition-all">
+                        <span class="material-symbols-outlined">logout</span> Log Out of All Sessions
+                    </button>
+                </div>
+            </div>
+            <!-- Bottom Spacer for better scroll experience -->
+            <div class="h-20 shrink-0"></div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="./assets/js/analytics.js"></script>
+    <script type="module" src="./assets/js/layout.js"></script>
+    <script type="module" src="./assets/js/settings.js"></script>
+</body>
+</html>

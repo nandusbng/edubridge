@@ -101,7 +101,7 @@ window.showPairDetails = function(pairKey) {
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-4">
                     <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Class / Section</p>
                         <p class="text-sm font-black text-slate-800 dark:text-slate-100 uppercase">${mentor.section || (pair.sessions[0].mentor_section) || "—"}</p>
@@ -142,7 +142,7 @@ window.showPairDetails = function(pairKey) {
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-4">
                     <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Class / Section</p>
                         <p class="text-sm font-black text-slate-800 dark:text-slate-100 uppercase">${mentee.section || (pair.sessions[0].mentee_section) || "—"}</p>

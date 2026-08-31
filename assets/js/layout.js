@@ -188,48 +188,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // ── 5. Mobile Sidebar Toggle ──────────────────────────────────────
-    if (aside && !isLanding) {
-        const headerLeft = document.querySelector('header .flex.items-center.gap-4');
-        if (headerLeft) {
-            let menuBtn = document.querySelector('#sidebar-toggle');
-            if (!menuBtn) {
-                menuBtn = document.createElement('button');
-                menuBtn.id = 'sidebar-toggle';
-                menuBtn.className = 'lg:hidden p-2 -ml-2 mr-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors';
-                menuBtn.innerHTML = '<span class="material-symbols-outlined">menu</span>';
-                headerLeft.prepend(menuBtn);
-            }
-
-            const backdrop = document.createElement('div');
-            backdrop.className = 'fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 hidden lg:hidden transition-opacity opacity-0';
-            document.body.appendChild(backdrop);
-
-            aside.classList.remove('hidden');
-            aside.classList.add('flex', 'transition-transform', 'duration-300', 'ease-in-out', '-translate-x-full', 'lg:translate-x-0', 'z-40');
-
-            let isSidebarOpen = false;
-            const toggleSidebar = () => {
-                isSidebarOpen = !isSidebarOpen;
-                if (isSidebarOpen) {
-                    aside.classList.remove('-translate-x-full');
-                    backdrop.classList.remove('hidden');
-                    requestAnimationFrame(() => backdrop.classList.remove('opacity-0'));
-                } else {
-                    aside.classList.add('-translate-x-full');
-                    backdrop.classList.add('opacity-0');
-                    setTimeout(() => backdrop.classList.add('hidden'), 300);
-                }
-            };
-
-            menuBtn.addEventListener('click', toggleSidebar);
-            backdrop.addEventListener('click', toggleSidebar);
-
-            aside.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (window.innerWidth < 1024 && isSidebarOpen) toggleSidebar();
-                });
-            });
-        }
+    const sidebarToggle = document.querySelector('#sidebar-toggle');
+    if (sidebarToggle && aside) {
+        sidebarToggle.addEventListener('click', () => {
+            aside.classList.toggle('hidden');
+        });
     }
 
     // ── 6. Global Notification System & Presence ──────────────────────

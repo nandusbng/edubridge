@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduBridge - Quizzes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#0056b2",
+                "background-light": "#f5f7f8",
+                "background-dark": "#0f1923",
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-3 md:px-10">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">EduBridge</h2>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="h-10 w-64 rounded-lg border-none bg-slate-100 dark:bg-slate-800 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary" placeholder="Search assessments..." type="text"/>
+</div>
+<button class="relative flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500"></span>
+</button>
+<div class="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center" data-alt="Student profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQWjbbqvkyCLArYihdW1JHUIRznZLn7k9Jp4TGc4hfJqB7nyo2N5c4Q_wSOiGOesWcHv5omfiQDe6efOkHQSYBNLBP9mcRVu6CnxecvuPi9vhImaDxcMhgfJzMz97q9J7Hwf4tQjHVLhutbogI7sDErRGWsrehOExQk2eZ0yuhgJzCjY1XOyhY9fA6u1yWEfwP40P5HuTJ0Vk-ATRwnkjGh6PItSS0ygxj7UaFde4YpGZX_AEiT9uJSGKZMs4-15U1YU8yRu0RU8s8')"></div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- Sidebar Navigation -->
+<aside class="hidden lg:flex flex-col h-screen w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 px-4 shrink-0 sticky top-0">
+<div class="mb-8 px-2">
+<div class="flex items-center gap-3">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700 dark:bg-blue-600 text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h2 class="text-xl font-bold text-blue-800 dark:text-blue-300">EduBridge</h2>
+<p class="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Learning Portal</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1 font-sans text-sm font-medium">
+<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">school</span>
+<span>Courses</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span>Assignments</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-r-4 border-blue-700 dark:border-blue-400 opacity-90 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">quiz</span>
+<span>Quizzes</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Study Notes</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">chat</span>
+<span>Chat</span>
+</a>
+<div class="my-2 border-t border-slate-100 dark:border-slate-800"></div>
+<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</div>
+<div class="mt-auto rounded-xl bg-slate-50 dark:bg-slate-800 p-4">
+<p class="text-xs font-bold text-slate-900 dark:text-white mb-2">Study Tip</p>
+<p class="text-xs text-slate-500 leading-relaxed">Active recall and spaced repetition are your best friends for upcoming finals.</p>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 bg-background-light dark:bg-background-dark p-6 md:p-10">
+<div class="mx-auto max-w-6xl">
+<!-- Page Header -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+<div>
+<h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Assessments</h1>
+<p class="mt-2 text-slate-500">Manage your academic progress and upcoming quiz deadlines.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 text-sm font-bold text-slate-700 dark:text-slate-200 shadow-sm">
+<span class="material-symbols-outlined text-base">filter_list</span> Filter
+                        </button>
+<button class="flex items-center gap-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 text-sm font-bold text-slate-700 dark:text-slate-200 shadow-sm">
+<span class="material-symbols-outlined text-base">sort</span> Sort
+                        </button>
+</div>
+</div>
+<!-- Tabs -->
+<div class="mb-8 border-b border-slate-200 dark:border-slate-800">
+<div class="flex gap-8">
+<button class="border-b-2 border-primary pb-4 text-sm font-bold text-slate-900 dark:text-white">All Quizzes</button>
+<button class="border-b-2 border-transparent pb-4 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Pending (3)</button>
+<button class="border-b-2 border-transparent pb-4 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Completed</button>
+<button class="border-b-2 border-transparent pb-4 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Late</button>
+</div>
+</div>
+<!-- Quiz Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Pending Quiz - High Urgency -->
+<div class="flex flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-shadow">
+<div class="h-32 bg-slate-100 dark:bg-slate-800 p-4 relative overflow-hidden">
+<div class="absolute inset-0 bg-primary/5"></div>
+<div class="relative z-10 flex justify-between items-start">
+<span class="rounded-full bg-yellow-100 dark:bg-yellow-900/30 px-3 py-1 text-xs font-bold text-yellow-700 dark:text-yellow-400">Pending</span>
+<div class="flex items-center gap-1 rounded-full bg-red-100 dark:bg-red-900/30 px-3 py-1 text-xs font-bold text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined text-sm">schedule</span> 4h 12m left
+                                </div>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-5">
+<div class="mb-4">
+<h3 class="text-lg font-bold leading-tight text-slate-900 dark:text-white">Advanced Mathematics Quiz 4</h3>
+<p class="text-sm font-medium text-primary mt-1">Calculus II • Dr. Henderson</p>
+</div>
+<div class="mb-6 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="material-symbols-outlined text-base">calendar_month</span>
+<span>Deadline: Oct 24, 2023 • 11:59 PM</span>
+</div>
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="material-symbols-outlined text-base">help</span>
+<span>20 Questions • 45 Minutes</span>
+</div>
+</div>
+<button class="mt-auto flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90">
+                                Start Quiz <span class="material-symbols-outlined text-base">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Pending Quiz -->
+<div class="flex flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-shadow">
+<div class="h-32 bg-slate-100 dark:bg-slate-800 p-4 relative overflow-hidden">
+<div class="absolute inset-0 bg-primary/5"></div>
+<div class="relative z-10 flex justify-between items-start">
+<span class="rounded-full bg-yellow-100 dark:bg-yellow-900/30 px-3 py-1 text-xs font-bold text-yellow-700 dark:text-yellow-400">Pending</span>
+<div class="flex items-center gap-1 rounded-full bg-slate-200 dark:bg-slate-700 px-3 py-1 text-xs font-bold text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-sm">schedule</span> 3 days left
+                                </div>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-5">
+<div class="mb-4">
+<h3 class="text-lg font-bold leading-tight text-slate-900 dark:text-white">Cell Biology: Mitosis Module</h3>
+<p class="text-sm font-medium text-primary mt-1">Biology 101 • Prof. Aris</p>
+</div>
+<div class="mb-6 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="material-symbols-outlined text-base">calendar_month</span>
+<span>Deadline: Oct 27, 2023 • 11:59 PM</span>
+</div>
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="material-symbols-outlined text-base">help</span>
+<span>15 Questions • 30 Minutes</span>
+</div>
+</div>
+<button class="mt-auto flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90">
+                                Start Quiz <span class="material-symbols-outlined text-base">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Late Quiz -->
+<div class="flex flex-col overflow-hidden rounded-xl border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-900 shadow-sm opacity-90">
+<div class="h-32 bg-red-50 dark:bg-red-950/20 p-4 relative overflow-hidden">
+<div class="relative z-10 flex justify-between items-start">
+<span class="rounded-full bg-red-100 dark:bg-red-900/40 px-3 py-1 text-xs font-bold text-red-700 dark:text-red-400">Late</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-5">
+<div class="mb-4">
+<h3 class="text-lg font-bold leading-tight text-slate-900 dark:text-white">Introduction to Ethics: Quiz 1</h3>
+<p class="text-sm font-medium text-primary mt-1">Philosophy 204 • Dr. Kovic</p>
+</div>
+<div class="mb-6 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-sm text-red-500 font-medium">
+<span class="material-symbols-outlined text-base">warning</span>
+<span>Past Due: Oct 21, 2023</span>
+</div>
+<div class="flex items-center gap-2 text-sm text-slate-400">
+<span class="material-symbols-outlined text-base">help</span>
+<span>10 Questions • 20 Minutes</span>
+</div>
+</div>
+<button class="mt-auto flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-lg bg-slate-200 dark:bg-slate-800 py-2.5 text-sm font-bold text-slate-400" disabled="">
+                                Locked
+                            </button>
+</div>
+</div>
+<!-- Completed Quiz -->
+<div class="flex flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<div class="h-32 bg-green-50 dark:bg-green-950/20 p-4 relative overflow-hidden">
+<div class="relative z-10 flex justify-between items-start">
+<span class="rounded-full bg-green-100 dark:bg-green-900/40 px-3 py-1 text-xs font-bold text-green-700 dark:text-green-400">Completed</span>
+<div class="flex items-center gap-1 rounded-full bg-white/80 dark:bg-slate-800/80 px-3 py-1 text-xs font-bold text-slate-900 dark:text-white backdrop-blur-sm">
+                                    Score: 18/20
+                                </div>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-5">
+<div class="mb-4">
+<h3 class="text-lg font-bold leading-tight text-slate-900 dark:text-white">Digital Electronics: Logic Gates</h3>
+<p class="text-sm font-medium text-primary mt-1">Engineering 301 • Prof. Sato</p>
+</div>
+<div class="mb-6 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span>Finished on: Oct 19, 2023</span>
+</div>
+</div>
+<button class="mt-auto flex w-full items-center justify-center gap-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                                View Results
+                            </button>
+</div>
+</div>
+<!-- Completed Quiz -->
+<div class="flex flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<div class="h-32 bg-green-50 dark:bg-green-950/20 p-4 relative overflow-hidden">
+<div class="relative z-10 flex justify-between items-start">
+<span class="rounded-full bg-green-100 dark:bg-green-900/40 px-3 py-1 text-xs font-bold text-green-700 dark:text-green-400">Completed</span>
+<div class="flex items-center gap-1 rounded-full bg-white/80 dark:bg-slate-800/80 px-3 py-1 text-xs font-bold text-slate-900 dark:text-white backdrop-blur-sm">
+                                    Score: 10/10
+                                </div>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-5">
+<div class="mb-4">
+<h3 class="text-lg font-bold leading-tight text-slate-900 dark:text-white">Microeconomics: Supply &amp; Demand</h3>
+<p class="text-sm font-medium text-primary mt-1">Economics 102 • Dr. Wallace</p>
+</div>
+<div class="mb-6 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span>Finished on: Oct 15, 2023</span>
+</div>
+</div>
+<button class="mt-auto flex w-full items-center justify-center gap-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                                View Results
+                            </button>
+</div>
+</div>
+<!-- Pending Quiz - Future -->
+<div class="flex flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-shadow">
+<div class="h-32 bg-slate-100 dark:bg-slate-800 p-4 relative overflow-hidden">
+<div class="absolute inset-0 bg-primary/5"></div>
+<div class="relative z-10 flex justify-between items-start">
+<span class="rounded-full bg-yellow-100 dark:bg-yellow-900/30 px-3 py-1 text-xs font-bold text-yellow-700 dark:text-yellow-400">Pending</span>
+<div class="flex items-center gap-1 rounded-full bg-slate-200 dark:bg-slate-700 px-3 py-1 text-xs font-bold text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-sm">schedule</span> 12 days left
+                                </div>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-5">
+<div class="mb-4">
+<h3 class="text-lg font-bold leading-tight text-slate-900 dark:text-white">Linear Algebra: Midterm Prep</h3>
+<p class="text-sm font-medium text-primary mt-1">Calculus II • Dr. Henderson</p>
+</div>
+<div class="mb-6 flex flex-col gap-2">
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="material-symbols-outlined text-base">calendar_month</span>
+<span>Deadline: Nov 05, 2023 • 11:59 PM</span>
+</div>
+<div class="flex items-center gap-2 text-sm text-slate-500">
+<span class="material-symbols-outlined text-base">help</span>
+<span>30 Questions • 60 Minutes</span>
+</div>
+</div>
+<button class="mt-auto flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90">
+                                Start Quiz <span class="material-symbols-outlined text-base">open_in_new</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pagination / Load More -->
+<div class="mt-12 flex justify-center">
+<button class="rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-8 py-2 text-sm font-bold text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                        Load More Quizzes
+                    </button>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

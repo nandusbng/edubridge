@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EduBridge – Faculty Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#0056b2", "background-light": "#f5f7f8", "background-dark": "#0f1923" },
+                    fontFamily: { "display": ["Inter"], "sans": ["Inter", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        @media (min-width: 1024px) {
+            .main-content-wrapper { margin-left: 16rem; }
+        }
+        .tab-content { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+
+    <!-- 🔍 ABSOLUTE TOP-LEVEL AUDIT HUB (FORCE RENDER) -->
+    <div id="interaction-detail-modal" style="display: none !important;" class="fixed inset-0 z-[9999] items-center justify-center p-4 bg-slate-900/90 backdrop-blur-xl">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-5xl rounded-[40px] overflow-hidden shadow-2xl flex flex-col max-h-[90vh] border border-slate-200 dark:border-slate-800">
+            <div class="p-8 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900">
+                <div class="flex items-center gap-4">
+                    <div class="size-14 bg-indigo-600 rounded-[22px] flex items-center justify-center text-white shadow-xl shadow-indigo-100">
+                        <span class="material-symbols-outlined text-3xl">fact_check</span>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-900 dark:text-white leading-tight">Academic Audit Hub</h3>
+                        <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mt-1">Direct Verification Insight</p>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('interaction-detail-modal').style.setProperty('display', 'none', 'important')" class="size-12 flex items-center justify-center text-slate-600 hover:bg-red-50 hover:text-red-600 rounded-full transition-all border border-slate-100 dark:border-slate-800">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div id="detail-modal-content" class="p-10 overflow-y-auto custom-scrollbar">
+                <!-- Content Injected Here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md fixed top-0 w-full z-[100] px-6 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle" class="lg:hidden text-slate-600"><span class="material-symbols-outlined">menu</span></button>
+            <div class="bg-primary rounded-lg size-10 flex items-center justify-center text-white">
+                <span class="material-symbols-outlined">school</span>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-blue-800 dark:text-blue-300 leading-none">EduBridge</h1>
+                <p class="text-slate-500 text-xs font-medium mt-0.5">Faculty Portal</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div id="faculty-badge" class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full">
+                <span class="size-2 bg-blue-500 rounded-full"></span>
+                <span id="faculty-name-display" class="text-xs font-bold text-blue-700">Faculty</span>
+            </div>
+            <button id="notification-bell" class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+                <span class="material-symbols-outlined text-[22px]">notifications</span>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+            </button>
+            <div class="size-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-sm" id="faculty-avatar">F</div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 pt-16">
+        <!-- Sidebar -->
+        <aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hidden lg:flex flex-col fixed left-0 top-16 bottom-0 z-40 py-6 px-4">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-3 mb-3">Faculty Tools</p>
+            <nav class="flex-1 flex flex-col gap-1" id="faculty-nav">
+                <a id="nav-overview" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#overview" data-tab="overview">
+                    <span class="material-symbols-outlined text-[20px]">dashboard</span><span>Overview</span>
+                </a>
+                <a id="nav-users" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#users" data-tab="users">
+                    <span class="material-symbols-outlined text-[20px]">group</span><span>Manage Users</span>
+                </a>
+                <a id="nav-notes" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#notes" data-tab="notes">
+                    <span class="material-symbols-outlined text-[20px]">description</span><span>Notes</span>
+                </a>
+                <a id="nav-announcements" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#announcements" data-tab="announcements">
+                    <span class="material-symbols-outlined text-[20px]">campaign</span><span>Announcements</span>
+                </a>
+                <a id="nav-analytics" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#analytics" data-tab="analytics">
+                    <span class="material-symbols-outlined text-[20px]">bar_chart</span><span>Analytics</span>
+                </a>
+                <a id="nav-live-classes" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#live-classes" data-tab="live-classes">
+                    <span class="material-symbols-outlined text-[20px]">calendar_today</span> Live Classes
+                </a>
+                <a id="nav-mentorship" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#mentorship" data-tab="mentorship">
+                    <span class="material-symbols-outlined text-[20px]">psychology</span> Mentorship
+                </a>
+                <a id="nav-interactions" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#interactions" data-tab="interactions">
+                    <span class="material-symbols-outlined text-[20px]">history_edu</span> Doubt Logs
+                </a>
+                <a id="nav-tracking-sheets" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#tracking-sheets" data-tab="tracking-sheets">
+                    <span class="material-symbols-outlined text-[20px]">description</span> Tracking Sheets
+                </a>
+                <a id="nav-exams" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#exams" data-tab="exams">
+                    <span class="material-symbols-outlined text-[20px]">grading</span> Assessment Center
+                </a>
+                <a id="nav-cloud-sync" class="nav-tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all" href="#cloud-sync" data-tab="cloud-sync">
+                    <span class="material-symbols-outlined text-[20px]">cloud_sync</span> Cloud Archives
+                </a>
+            </nav>
+            <div class="mt-auto pt-4 flex flex-col gap-1 border-t border-slate-100 dark:border-slate-800">
+                <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 transition-colors text-sm font-medium">
+                    <span class="material-symbols-outlined text-[20px]">settings</span><span>Settings</span>
+                </a>
+                <a href="#logout" class="flex items-center gap-3 px-3 py-2 rounded-lg text-red-500 hover:bg-red-50 text-sm font-medium transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">logout</span><span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <div class="flex-1 main-content-wrapper min-h-screen lg:ml-64">
+            <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+
+            <!-- ── Tab: Overview ─────────────────────────────────────── -->
+            <div id="tab-overview" class="tab-content space-y-8">
+                <div>
+                    <h2 class="text-2xl font-extrabold tracking-tight">Faculty Dashboard</h2>
+                    <p class="text-slate-500 text-sm mt-1">Welcome back. Here's a live snapshot of your institution.</p>
+                </div>
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Students</span>
+                            <div class="size-9 bg-blue-50 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-blue-500 text-[18px]">school</span></div>
+                        </div>
+                        <p class="text-3xl font-black text-slate-900 dark:text-white" id="stat-students">—</p>
+                        <p class="text-xs text-emerald-600 font-semibold mt-1">Total enrolled</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Mentors</span>
+                            <div class="size-9 bg-violet-50 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-violet-500 text-[18px]">groups</span></div>
+                        </div>
+                        <p class="text-3xl font-black text-slate-900 dark:text-white" id="stat-mentors">—</p>
+                        <p class="text-xs text-violet-600 font-semibold mt-1">Active mentors</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Users</span>
+                            <div class="size-9 bg-emerald-50 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-emerald-500 text-[18px]">person</span></div>
+                        </div>
+                        <p class="text-3xl font-black text-slate-900 dark:text-white" id="stat-total">—</p>
+                        <p class="text-xs text-emerald-600 font-semibold mt-1">Across all roles</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Notes</span>
+                            <div class="size-9 bg-amber-50 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-amber-500 text-[18px]">description</span></div>
+                        </div>
+                        <p class="text-3xl font-black text-slate-900 dark:text-white" id="stat-notes">—</p>
+                        <p class="text-xs text-amber-600 font-semibold mt-1">Uploaded resources</p>
+                    </div>
+                </div>
+                <!-- Recent Data Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Recent Users -->
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <h3 class="font-bold text-slate-900 dark:text-white">Recent Registrations</h3>
+                            <a href="#" data-switch-tab="users" class="text-xs font-bold text-primary hover:underline">View all →</a>
+                        </div>
+                        <div id="recent-users-list" class="divide-y divide-slate-50 dark:divide-slate-800">
+                            <div class="px-6 py-8 text-center text-slate-400 text-sm">Loading...</div>
+                        </div>
+                    </div>
+                    <!-- Rapid Announcements Dashboard Section -->
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[400px]">
+                        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
+                            <h3 class="font-bold text-slate-900 dark:text-white">Direct Communications</h3>
+                            <a href="#" data-switch-tab="announcements" class="text-xs font-bold text-primary hover:underline">Manage all →</a>
+                        </div>
+                        <div id="dashboard-announcements" class="p-6 space-y-4 overflow-y-auto no-scrollbar flex-1">
+                            <div class="text-center py-4 text-slate-400 text-xs italic">Syncing platform updates...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Premium Acknowledgement Hub (Dashboard Only) -->
+                <div class="mt-20">
+                    <div class="relative overflow-hidden rounded-[3rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl shadow-slate-200/50 dark:shadow-none p-10 lg:p-16">
+                        <!-- Decorative Elements -->
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                        <div class="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+                        
+                        <div class="relative z-10 flex flex-col lg:flex-row gap-16 items-start text-left">
+                            <!-- Creator Info -->
+                            <div class="lg:w-1/3 space-y-8">
+                                <div class="space-y-4">
+                                    <div class="size-20 bg-indigo-600 text-white rounded-3xl flex items-center justify-center font-black text-2xl tracking-tighter shadow-xl shadow-indigo-200 dark:shadow-none transition-transform hover:scale-105 duration-500">SBNG</div>
+                                    <div>
+                                        <h3 class="text-2xl font-black text-slate-900 dark:text-white tracking-tighter uppercase leading-none">Nanda Kishore Sreejith</h3>
+                                        <p class="text-indigo-600 dark:text-indigo-400 text-[11px] font-black uppercase tracking-[0.3em] mt-3">Lead Architect & Developer</p>
+                                    </div>
+                                </div>
+                                <div class="pt-6 border-t border-slate-100 dark:border-slate-800">
+                                    <p class="text-sm font-bold text-slate-800 dark:text-slate-200 leading-tight">Computer Science branch</p>
+                                    <p class="text-[11px] text-slate-500 uppercase font-black tracking-widest mt-1">Class of 2024-2028</p>
+                                    <p class="text-[11px] text-slate-500 uppercase font-black tracking-widest mt-0.5">Sri Venkateswara College Of Engineering</p>
+                                </div>
+                            </div>
+
+                            <!-- Acknowledgements -->
+                            <div class="lg:w-2/3 space-y-10">
+                                <div class="space-y-6">
+                                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Institutional Gratitude</h4>
+                                    <p class="text-lg font-medium text-slate-600 dark:text-slate-300 leading-relaxed italic">
+                                        "I would like to thank Dr. R ANITHA (Professor and Head/CSE) and R K KAPILAVANI (Assistant Professor/CSE) for the opportunity given to me to make this wonderful platform. Heartfelt thanks to my family for their constant support."
+                                    </p>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-slate-100 dark:border-slate-800">
+                                    <div class="space-y-1">
+                                        <p class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Dr. R ANITHA</p>
+                                        <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Professor and Head / CSE</p>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <p class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight">R K KAPILAVANI</p>
+                                        <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest">Assistant Professor / CSE</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-12 text-center text-[10px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.5em] opacity-50 italic">Built for the future of academic management.</p>
+                </div>
+            </div>
+
+            <!-- ── Tab: Manage Users ──────────────────────────────────── -->
+            <div id="tab-users" class="tab-content hidden space-y-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-extrabold tracking-tight">Manage Users</h2>
+                        <p class="text-slate-500 text-sm mt-1">Update roles and monitor registrations.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <select id="role-filter" class="text-sm border border-slate-200 rounded-xl px-4 py-2 bg-white dark:bg-slate-800 font-medium outline-none">
+                            <option value="">All Roles</option>
+                            <option value="student">Students Only</option>
+                            <option value="mentor">Mentors Only</option>
+                            <option value="faculty">Faculty Only</option>
+                            <option value="admin">Admins Only</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
+                            <tr>
+                                <th class="px-6 py-3 text-[11px] font-black text-slate-400 uppercase tracking-wider">User</th>
+                                <th class="px-6 py-3 text-[11px] font-black text-slate-400 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-[11px] font-black text-slate-400 uppercase tracking-wider">Role</th>
+                                <th class="px-6 py-3 text-[11px] font-black text-slate-400 uppercase tracking-wider">Joined</th>
+                                <th class="px-6 py-3 text-[11px] font-black text-slate-400 uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body" class="divide-y divide-slate-50 dark:divide-slate-800">
+                            <tr><td colspan="5" class="px-6 py-12 text-center text-slate-400">Loading users...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ── Tab: Notes ────────────────────────────────────────── -->
+            <div id="tab-notes" class="tab-content hidden space-y-6">
+                <!-- Notes Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Notes Management</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Filter, edit, delete, and monitor all academic resources.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span id="notes-count-badge" class="hidden md:flex items-center px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold text-slate-500"></span>
+                        <button id="open-upload-modal" class="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-blue-700 transition-all shadow-md shadow-primary/30">
+                            <span class="material-symbols-outlined text-[18px]">upload_file</span>
+                            Upload New
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Semester + Subject Filters (Standardized UI) -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+                    <!-- Semester Row -->
+                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="material-symbols-outlined text-[16px] text-primary">calendar_view_week</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Select Semester</span>
+                            <button id="clear-filters" class="ml-auto text-[10px] font-black uppercase text-primary hover:underline hidden">Clear all</button>
+                        </div>
+                        <div id="semester-filters" class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    <!-- Subject Row (hidden until semester selected) -->
+                    <div id="subject-section" class="hidden px-6 py-4 bg-slate-50/50 dark:bg-slate-800/30">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="material-symbols-outlined text-[16px] text-primary">menu_book</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Select Subject</span>
+                            <span id="subject-count" class="ml-2 text-[10px] font-bold bg-primary/10 text-primary px-2 py-0.5 rounded-full"></span>
+                        </div>
+                        <div id="subject-filters" class="flex flex-wrap gap-2">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Breadcrumb & Search -->
+                <div id="filter-breadcrumb" class="hidden flex items-center gap-2 px-2">
+                    <span class="text-xs font-bold text-slate-400">Filtering:</span>
+                    <span id="breadcrumb-text" class="text-xs font-black text-primary px-3 py-1 bg-primary/5 rounded-lg border border-primary/10"></span>
+                </div>
+
+                <!-- Notes Grid -->
+                <div id="notes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-20">
+                    <div class="col-span-full py-20 flex flex-col items-center justify-center text-center">
+                        <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+                        <p class="text-sm font-bold text-slate-400">Syncing notes repository...</p>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="hidden">
+                    <div class="flex flex-col items-center justify-center py-20 text-center">
+                        <div class="w-20 h-20 rounded-3xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-6">
+                            <span class="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600">folder_open</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">No notes matched your filter</h3>
+                        <p class="text-sm text-slate-500 mt-2 max-w-xs">Try selecting a different subject or upload new material.</p>
+                        <button onclick="document.getElementById('open-upload-modal').click()" class="mt-6 px-6 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-blue-700 transition-all">
+                            Upload Note
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Tab: Announcements ─────────────────────────────────── -->
+            <div id="tab-announcements" class="tab-content hidden space-y-6">
+                <div>
+                    <h2 class="text-2xl font-extrabold tracking-tight">Announcements</h2>
+                    <p class="text-slate-500 text-sm mt-1">Broadcast messages to all portal users.</p>
+                </div>
+                <!-- New Announcement -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+                    <h3 class="font-bold mb-4">Create Announcement</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Title</label>
+                            <input id="ann-title" type="text" placeholder="Announcement title..." class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary bg-slate-50 focus:bg-white transition-all">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Message</label>
+                            <textarea id="ann-body" rows="4" placeholder="Write your announcement..." class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-primary bg-slate-50 focus:bg-white transition-all resize-none"></textarea>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <select id="ann-target" class="border border-slate-200 rounded-xl px-4 py-2 text-sm bg-white outline-none">
+                                <option value="all">Broadcast: All Roles</option>
+                                <option value="student">Broadcast: Students Only</option>
+                                <option value="mentor">Broadcast: Mentors Only</option>
+                            </select>
+                            <select id="ann-duration" class="border border-slate-200 rounded-xl px-4 py-2 text-sm bg-white outline-none">
+                                <option value="infinite">No Expiry (Permanent)</option>
+                                <option value="30m">Auto-Delete in 30 Min</option>
+                                <option value="1d">Auto-Delete in 1 Day</option>
+                                <option value="10d">Auto-Delete in 10 Days</option>
+                            </select>
+                            <button id="post-ann-btn" onclick="window.facultyPortal.postAnnouncement()" class="px-6 py-2 bg-primary text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-primary/20">
+                                Post Announcement
+                            </button>
+                        </div>
+                        <p id="ann-status" class="text-sm font-semibold hidden"></p>
+                    </div>
+                </div>
+                <!-- Announcements List -->
+                <div class="space-y-4" id="announcements-list">
+                    <div class="text-center py-8 text-slate-400 text-sm">Loading announcements...</div>
+                </div>
+            </div>
+
+            <!-- ── Tab: Analytics ────────────────────────────────────── -->
+            <div id="tab-analytics" class="tab-content hidden space-y-8">
+                <div>
+                    <h2 class="text-2xl font-extrabold tracking-tight">Student Success Analytics</h2>
+                    <p class="text-slate-500 text-sm mt-1">Live performance monitoring and educational health indicators.</p>
+                </div>
+
+                <!-- 1. Total Summary Card (Unified) -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-center">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Students</p>
+                        <p class="text-3xl font-black text-slate-900 dark:text-white" id="stat-students-total">—</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-center">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Slow Learners</p>
+                        <p class="text-3xl font-black text-amber-500" id="stat-slow-total">—</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-center">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Active Now</p>
+                        <p class="text-3xl font-black text-emerald-500" id="stat-active-total">—</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-center">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Avg Score</p>
+                        <p class="text-3xl font-black text-primary" id="stat-avg">—</p>
+                    </div>
+                </div>
+
+                <!-- 2. Slow Learners Details -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-amber-500">warning</span>
+                        <h3 class="font-black text-slate-900 dark:text-white">Attention Required: Slow Learners</h3>
+                    </div>
+                    <div id="slow-learners-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="col-span-full text-center py-8 text-slate-400 text-xs italic">Awaiting data sync...</div>
+                    </div>
+                </div>
+
+                <!-- 3. Mentor's Students Details -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-violet-500">supervisor_account</span>
+                        <h3 class="font-black text-slate-900 dark:text-white">Mentor Performance Tracking</h3>
+                    </div>
+                    <div id="mentor-students-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="col-span-full text-center py-8 text-slate-400 text-xs italic">Awaiting data sync...</div>
+                    </div>
+                </div>
+
+                <!-- 4. Unified Statistics Table -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 flex items-center justify-between">
+                        <h3 class="font-black text-slate-900 dark:text-white uppercase tracking-tighter">Student Engagement Matrix</h3>
+                        <button onclick="window.loadAnalytics()" class="size-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-primary transition-all"><span class="material-symbols-outlined text-[18px]">sync</span></button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 dark:bg-slate-800/50">
+                                <tr>
+                                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Student</th>
+                                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Mentor</th>
+                                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Notes Seen</th>
+                                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Time Active</th>
+                                    <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Classification</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analytics-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <tr><td colspan="5" class="px-6 py-12 text-center text-slate-400 animate-pulse font-medium">Crunching interaction data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Tab: Live Classes ─────────────────────────────────────── -->
+            <div id="tab-live-classes" class="tab-content hidden space-y-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-extrabold tracking-tight">Live Classes</h2>
+                        <p class="text-slate-500 text-sm mt-1">Schedule and manage Google Meet sessions for your students.</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                    <!-- Schedule Form -->
+                    <div class="xl:col-span-1 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm">
+                        <h3 class="font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-[20px]">add_circle</span> Schedule New
+                        </h3>
+                        <form id="schedule-class-form" class="space-y-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Class Name</label>
+                                <input id="class-title" type="text" required class="w-full px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl text-sm outline-none" placeholder="e.g. Advanced Calculus Lecture">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Description</label>
+                                <textarea id="class-desc" rows="3" class="w-full px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl text-sm outline-none resize-none" placeholder="Topics to be covered..."></textarea>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Date</label>
+                                    <input id="class-date" type="date" required class="w-full px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl text-sm outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Time</label>
+                                    <input id="class-time" type="time" required class="w-full px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl text-sm outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Duration (minutes)</label>
+                                <input id="class-duration" type="number" min="15" step="5" value="60" required class="w-full px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl text-sm outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Google Meet Link</label>
+                                <input id="class-meet-link" type="url" required class="w-full px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl text-sm outline-none text-blue-600 font-medium" placeholder="https://meet.google.com/xxx-xxxx-xxx">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Target Audience</label>
+                                <select id="class-target" required class="w-full px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl text-sm outline-none font-medium appearance-none">
+                                    <option value="student">Mentees (Students)</option>
+                                    <option value="mentor">Peer Mentors</option>
+                                </select>
+                            </div>
+                            <button type="submit" id="submit-class" class="w-full mt-4 bg-primary hover:bg-blue-600 text-white font-black py-4 rounded-xl text-sm transition-all flex items-center justify-center gap-2 uppercase tracking-wide shadow-md shadow-primary/20">
+                                Schedule session
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Scheduled Classes List -->
+                    <div class="xl:col-span-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl shadow-sm overflow-hidden flex flex-col min-h-[500px]">
+                        <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50">
+                            <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-slate-400 text-[20px]">calendar_month</span> Upcoming Sessions
+                            </h3>
+                        </div>
+                        <div id="live-classes-list" class="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
+                            <div class="p-12 text-center flex flex-col items-center justify-center text-slate-400">
+                                <span class="material-symbols-outlined text-4xl mb-3 text-slate-200">event_busy</span>
+                                <p class="text-sm font-medium">No live classes scheduled.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- ── Tab: Mentorship Ecosystem ───────────────────────────── -->
+            <div id="tab-mentorship" class="tab-content hidden space-y-8 fade-in h-auto">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Mentorship Ecosystem</h3>
+                        <p class="text-slate-500 text-sm mt-1">Real-time surveillance of peer-to-peer discussion clusters.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                    <!-- Sidebar: List of Mentors -->
+                    <div class="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl shadow-sm overflow-hidden flex flex-col min-h-[500px]">
+                        <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50">
+                            <h4 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[20px] text-primary">groups</span> Active Mentors
+                            </h4>
+                        </div>
+                        <div id="oversight-mentor-list" class="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
+                            <div class="p-12 text-center text-slate-400 italic text-sm">Initializing ecosystem feed...</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Main: Live Chat Log -->
+                    <div class="xl:col-span-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[700px]">
+                        <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 flex justify-between items-center">
+                            <div class="flex flex-col">
+                                <h4 id="oversight-chat-title" class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[20px] text-slate-400">visibility</span> Surveillance Terminal
+                                </h4>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Live Feed • Ecosystem Hub</p>
+                            </div>
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700">Protected Stream</span>
+                        </div>
+                        <div id="oversight-chat-log" class="flex-1 overflow-y-auto p-6 bg-slate-50/30 dark:bg-slate-900/10 space-y-6">
+                            <div class="h-full flex items-center justify-center text-slate-400 flex-col gap-4">
+                                <div class="size-16 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-4xl">monitoring</span>
+                                </div>
+                                <p class="text-sm font-medium tracking-tight">Select an active mentor to monitor live interactions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Tab: Doubt Interaction Logs ────────────────────────── -->
+            <div id="tab-interactions" class="tab-content hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 px-2">
+                    <div class="space-y-2">
+                         <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 dark:bg-indigo-900/40 rounded-full border border-indigo-100 dark:border-indigo-800 shadow-sm">
+                            <span class="material-symbols-outlined text-indigo-500 text-[14px]">history_edu</span>
+                            <span class="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em]">Academic Audit Hub</span>
+                        </div>
+                        <h2 class="text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-none">Comprehensive Doubt Logs</h2>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Monitoring dual-verified tracking sheets for peer-to-peer academic support.</p>
+                    </div>
+                </div>
+
+                <!-- Verified Stats Row -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[32px] shadow-sm flex items-center gap-5">
+                        <div class="size-14 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600"><span class="material-symbols-outlined text-3xl">task_alt</span></div>
+                        <div>
+                            <p class="text-2xl font-black text-slate-900 dark:text-white" id="total-verified-logs">0</p>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Sessions</p>
+                        </div>
+                    </div>
+                     <div class="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[32px] shadow-sm flex items-center gap-5">
+                        <div class="size-14 rounded-2xl bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600"><span class="material-symbols-outlined text-3xl">verified_user</span></div>
+                        <div>
+                            <p class="text-2xl font-black text-slate-900 dark:text-white" id="fully-verified-logs">0</p>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Fully Verified</p>
+                        </div>
+                    </div>
+                     <div class="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[32px] shadow-sm flex items-center gap-5">
+                        <div class="size-14 rounded-2xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center text-amber-600"><span class="material-symbols-outlined text-3xl">pending_actions</span></div>
+                        <div>
+                            <p class="text-2xl font-black text-slate-900 dark:text-white" id="pending-verified-logs">0</p>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Under Service</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactions Table Container -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[40px] overflow-hidden shadow-sm">
+                    <div class="overflow-x-auto selection:bg-indigo-100 custom-scrollbar">
+                        <table class="w-full text-left min-w-[1100px]">
+                            <thead class="bg-slate-50/50 dark:bg-slate-800/30 border-b border-slate-100 dark:border-slate-800">
+                                <tr class="divide-x divide-slate-100 dark:divide-slate-800">
+                                    <th class="px-8 py-6 text-[11px] font-black uppercase text-slate-400 tracking-widest bg-indigo-50/20">Mentee Academic Profile</th>
+                                    <th class="px-8 py-6 text-[11px] font-black uppercase text-slate-400 tracking-widest bg-emerald-50/20">Mentor Academic Profile</th>
+                                    <th class="px-8 py-6 text-[11px] font-black uppercase text-slate-400 tracking-widest text-center">Session Progress</th>
+                                    <th class="px-8 py-6 text-[11px] font-black uppercase text-slate-400 tracking-widest text-center">Audit Status</th>
+                                    <th class="px-8 py-6 text-[11px] font-black uppercase text-slate-400 tracking-widest text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="interactions-list" class="divide-y divide-slate-50 dark:divide-slate-800">
+                                <!-- Dynamic Rows -->
+                                <tr>
+                                    <td colspan="5" class="px-8 py-20 text-center text-slate-400">
+                                        <div class="flex flex-col items-center gap-4">
+                                            <div class="size-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                                            <p class="text-sm font-bold animate-pulse uppercase tracking-widest">Synchronizing Encrypted Sessions...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Tab: Tracking Sheets ─────────────────────────────────── -->
+            <div id="tab-tracking-sheets" class="tab-content hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div class="space-y-2">
+                         <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/40 rounded-full border border-blue-100 dark:border-blue-800 shadow-sm">
+                            <span class="material-symbols-outlined text-blue-500 text-[14px]">description</span>
+                            <span class="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em]">Academic Documentation</span>
+                        </div>
+                        <h2 class="text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-none">Tracking Sheets Hub</h2>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Generate and print official Peer Mentoring Academic Tracking Sheets.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[40px] overflow-hidden shadow-sm">
+                    <div class="overflow-x-auto selection:bg-blue-100 custom-scrollbar">
+                        <table class="w-full text-left min-w-[1000px]">
+                            <thead class="bg-slate-50/50 dark:bg-slate-800/30 border-b border-slate-100 dark:border-slate-800">
+                                <tr>
+                                    <th class="px-8 py-6 text-[11px] font-black uppercase text-slate-400 tracking-widest bg-blue-50/20">Mentor-Mentee Pair</th>
+                                    <th class="px-8 py-6 text-[11px] font-black uppercase text-slate-400 tracking-widest text-center">Sessions Recorded</th>
+                                    <th class="px-8 py-6 text-[11px] font-black uppercase text-slate-400 tracking-widest text-center">Last Interaction</th>
+                                    <th class="px-8 py-6 text-[11px] font-black uppercase text-slate-400 tracking-widest text-center">Digital Generation</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tracking-pairs-list" class="divide-y divide-slate-50 dark:divide-slate-800 text-[14px]">
+                                <tr>
+                                    <td colspan="4" class="px-8 py-20 text-center text-slate-400 font-medium italic">Scanning ecosystem for active pairings...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. EXAM PORTAL TAB -->
+            <div id="tab-exams" class="tab-content hidden animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
+                <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div class="space-y-2">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 dark:bg-indigo-900/40 rounded-full border border-indigo-100 dark:border-indigo-800 shadow-sm">
+                            <span class="material-symbols-outlined text-indigo-500 text-[14px]">grading</span>
+                            <span class="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em]">Academic Evaluation</span>
+                        </div>
+                        <h2 class="text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-none">Assessment Workspace</h2>
+                        <p class="text-slate-500 dark:text-slate-400 font-medium">Design and schedule skill-based evaluations and knowledge checks.</p>
+                    </div>
+                </div>
+
+                <!-- Exam Builder -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
+                    <h3 class="text-lg font-black text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-6">
+                        <span class="material-symbols-outlined text-green-500">add_task</span> Design New Skill Check
+                    </h3>
+                    
+                    <form id="build-exam-form" class="space-y-6">
+                        <!-- Configuration -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Assessment Name</label>
+                                <input type="text" id="exam-title" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white" placeholder="E.g., Mid-Term Skill Check">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Subject Module</label>
+                                <input type="text" id="exam-subject" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white" placeholder="E.g., Engineering Mathematics">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Duration (Minutes)</label>
+                                <input type="number" id="exam-duration" required min="1" max="180" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white" placeholder="E.g., 45">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Active Window Deadline</label>
+                                <input type="datetime-local" id="exam-deadline" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white" title="Auto-deactivates at this time">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Target Personnel</label>
+                                <select id="exam-audience" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white font-bold text-slate-700">
+                                    <option value="all_slow_learners">All Slow Learners</option>
+                                    <option value="specific">Target Individual Candidates</option>
+                                    <option value="mentors">All Mentors</option>
+                                </select>
+                            </div>
+                            <div class="lg:col-span-2">
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Evaluation Release Mode</label>
+                                <select id="exam-release-mode" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white text-slate-700">
+                                    <option value="immediate">Show mark immediately upon submission</option>
+                                    <option value="manual">Wait for manual evaluation and publish</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Number of MCQs</label>
+                                <input type="number" id="exam-mcq-count" required min="1" max="100" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white" placeholder="E.g., 10">
+                            </div>
+                        </div>
+                        
+                        <div id="specific-audience-config" class="hidden">
+                             <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Select Specific Candidates</label>
+                             <div id="specific-audience-list" class="grid grid-cols-2 sm:grid-cols-3 max-h-40 overflow-y-auto gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                                 <!-- Checkboxes generated dynamically -->
+                             </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Candidate Directives & Instructions</label>
+                            <textarea id="exam-instructions" rows="2" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none resize-none dark:bg-slate-800 dark:border-slate-700 dark:text-white" placeholder="Navigation away from the portal will be logged..."></textarea>
+                        </div>
+                        
+                        <div class="border-t border-slate-200 dark:border-slate-800 pt-6">
+                             <button type="button" id="generate-mcq-fields-btn" class="w-full md:w-auto px-6 py-3 bg-slate-800 dark:bg-slate-700 text-white font-bold text-[11px] uppercase tracking-widest rounded-xl hover:bg-slate-700 transition-colors shadow-lg">Generate Question Fields</button>
+                        </div>
+
+                        <!-- Dynamic Questions Area -->
+                        <div id="exam-questions-container" class="space-y-6 hidden mt-6">
+                            <!-- Question fields go here -->
+                        </div>
+
+                        <div id="exam-submit-container" class="hidden mt-8 border-t border-slate-200 dark:border-slate-800 pt-6">
+                            <button type="submit" id="exam-submit-btn" class="w-full py-4 bg-green-600 text-white rounded-2xl font-black text-sm hover:brightness-110 transition-all flex items-center justify-center gap-2 uppercase tracking-wide shadow-lg shadow-green-200 dark:shadow-none">
+                                <span class="material-symbols-outlined text-[20px]">cloud_upload</span> Activate Skill Check
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Global Test Performance Engine -->
+                <div id="global-exam-performance" class="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4 hidden fade-in mt-8">
+                    <div class="md:col-span-4 bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight">Global Assessment Metrics</h3>
+                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest mt-1">Aggregated statistics across all testing modules</p>
+                        </div>
+                    </div>
+                    <!-- Stat Cards -->
+                    <div class="bg-indigo-50 dark:bg-indigo-900/10 p-5 rounded-2xl border border-indigo-100 dark:border-indigo-900/30">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="material-symbols-outlined text-indigo-500">assignment</span>
+                            <span class="text-xs font-black uppercase text-indigo-400 tracking-widest">Active Modules</span>
+                        </div>
+                        <p class="text-4xl font-black text-indigo-600" id="global-total-exams">0</p>
+                    </div>
+                    <div class="bg-emerald-50 dark:bg-emerald-900/10 p-5 rounded-2xl border border-emerald-100 dark:border-emerald-900/30">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="material-symbols-outlined text-emerald-500">checklist</span>
+                            <span class="text-xs font-black uppercase text-emerald-400 tracking-widest">Submissions</span>
+                        </div>
+                        <p class="text-4xl font-black text-emerald-600" id="global-total-attempts">0</p>
+                    </div>
+                    <div class="bg-amber-50 dark:bg-amber-900/10 p-5 rounded-2xl border border-amber-100 dark:border-amber-900/30">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="material-symbols-outlined text-amber-500">avg_time</span>
+                            <span class="text-xs font-black uppercase text-amber-500 tracking-widest">Avg Time</span>
+                        </div>
+                        <p class="text-4xl font-black text-amber-600" id="global-avg-time">0m</p>
+                    </div>
+                    <div class="bg-rose-50 dark:bg-rose-900/10 p-5 rounded-2xl border border-rose-100 dark:border-rose-900/30">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="material-symbols-outlined text-rose-500">warning</span>
+                            <span class="text-xs font-black uppercase text-rose-400 tracking-widest">Avg Risk / Strikes</span>
+                        </div>
+                        <p class="text-4xl font-black text-rose-600" id="global-avg-strikes">0</p>
+                    </div>
+
+                    <!-- Global Charts -->
+                    <div class="md:col-span-2 bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm h-64">
+                         <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Overall Performance Trend</h4>
+                         <div class="h-44">
+                            <canvas id="globalPerformanceChart"></canvas>
+                         </div>
+                    </div>
+                    <div class="md:col-span-2 bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm h-64">
+                         <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Security Integrity Overview</h4>
+                         <div class="h-44">
+                            <canvas id="globalIntegrityChart"></canvas>
+                         </div>
+                    </div>
+                </div>
+                
+                <!-- Submitted Exams List -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm mt-8">
+                    <h3 class="text-lg font-black text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-6">
+                        <span class="material-symbols-outlined text-blue-500">checklist</span> Active & Completed Skill Checks
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+                                    <th class="px-4 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Blueprint</th>
+                                    <th class="px-4 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Subject</th>
+                                    <th class="px-4 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Config</th>
+                                    <th class="px-4 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Submissions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="faculty-exams-list" class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+                                <tr>
+                                    <td colspan="4" class="px-4 py-8 text-center text-slate-400 italic font-medium">Fetching deployed exams...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Tab: Cloud Sync ───────────────────────────────────────── -->
+            <div id="tab-cloud-sync" class="tab-content hidden animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-12 py-10 flex flex-col items-center w-full">
+                <div class="flex flex-col items-center text-center space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 dark:bg-indigo-900/40 rounded-full border border-indigo-100 dark:border-indigo-800 shadow-sm">
+                        <span class="material-symbols-outlined text-indigo-500 text-[14px]">cloud_sync</span>
+                        <span class="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em]">Institutional Archives</span>
+                    </div>
+                    <h2 class="text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-none">Cloud Synchronization</h2>
+                    <p class="text-slate-500 dark:text-slate-400 font-medium max-w-lg">Transmit peer mentorship logs to the central Google Sheets database for permanent record-keeping.</p>
+                </div>
+
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[40px] shadow-sm overflow-hidden mb-10">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+                                    <th class="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Archive Target</th>
+                                    <th class="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Technical Protocol</th>
+                                    <th class="px-8 py-6 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Cloud Status</th>
+                                    <th class="px-8 py-6 text-right text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Control Center</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50 dark:divide-slate-800">
+                                <!-- Row 1: Chat Logs -->
+                                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                                    <td class="px-8 py-8">
+                                        <div class="flex items-center gap-4">
+                                            <div class="size-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                                                <span class="material-symbols-outlined">chat_bubble</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-black text-slate-900 dark:text-white uppercase tracking-tight">Institutional Chat Logs</p>
+                                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Peer Mentorship Discussions</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-8">
+                                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/10 text-blue-600 dark:text-blue-400 rounded-full text-[10px] font-black uppercase tracking-widest">
+                                            <span class="size-1.5 rounded-full bg-blue-500"></span>
+                                            GAS Bridge v2.4
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-8 text-center">
+                                        <span class="text-xs font-bold text-slate-900 dark:text-white tabular-nums">Connected</span>
+                                    </td>
+                                    <td class="px-8 py-8">
+                                        <div class="flex items-center justify-end gap-3">
+                                            <button id="sync-chats-btn" onclick="window.syncChatsToGoogleSheet()" class="w-44 h-11 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-100 dark:shadow-none whitespace-nowrap">
+                                                <span class="material-symbols-outlined text-sm">sync</span>
+                                                Populate Chat
+                                            </button>
+                                            <a href="https://docs.google.com/spreadsheets/d/1J00z4Q_uK6mqeIErTnImnM_RpiAZENlWKvFUpyXTmec/edit?usp=sharing" target="_blank" class="w-44 h-11 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+                                                <span class="material-symbols-outlined text-sm text-emerald-500">grid_on</span>
+                                                View Sheet
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Row 2: User Analytics -->
+                                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                                    <td class="px-8 py-8">
+                                        <div class="flex items-center gap-4">
+                                            <div class="size-12 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                                <span class="material-symbols-outlined">analytics</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-black text-slate-900 dark:text-white uppercase tracking-tight">Student Analytics Hub</p>
+                                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Engagement & Progress Metrics</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-8">
+                                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 dark:bg-emerald-900/10 text-emerald-600 dark:text-emerald-400 rounded-full text-[10px] font-black uppercase tracking-widest">
+                                            <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                            Cloud Sync v1.1
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-8 text-center">
+                                        <span class="text-xs font-bold text-slate-900 dark:text-white tabular-nums">Connected</span>
+                                    </td>
+                                    <td class="px-8 py-8">
+                                        <div class="flex items-center justify-end gap-3">
+                                            <button id="bulk-sync-btn" class="w-44 h-11 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-100 dark:shadow-none whitespace-nowrap">
+                                                <span class="material-symbols-outlined text-sm">cloud_upload</span>
+                                                Bulk Sync Users
+                                            </button>
+                                            <a href="https://docs.google.com/spreadsheets/d/1SKHDieSBpPRMGsCZdJERvWulaBF6Rq64yDD8lczK0mU/edit?usp=sharing" target="_blank" class="w-44 h-11 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+                                                <span class="material-symbols-outlined text-sm text-emerald-500">table_view</span>
+                                                View analytics
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="p-8 bg-slate-50 dark:bg-slate-800/50 rounded-[32px] border border-slate-100 dark:border-slate-800">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="material-symbols-outlined text-amber-500">security</span>
+                                <h4 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">Archive Security Protocol</h4>
+                            </div>
+                            <p class="text-[11px] text-slate-500 leading-relaxed">
+                                All transmissions are encrypted using standard HTTPS protocol. Logs are immutable once written to the institutional Google Sheet. Ensure appropriate access control within the Google environment for sensitive student data.
+                            </p>
+                        </div>
+                        <div class="p-8 bg-indigo-600 rounded-[32px] text-white">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="material-symbols-outlined text-indigo-200">sync_problem</span>
+                                <h4 class="text-xs font-black text-indigo-100 uppercase tracking-widest">Delta Update Logic</h4>
+                            </div>
+                            <p class="text-[11px] text-indigo-100 leading-relaxed">
+                                The "Populate" function uses delta-logic to only append new entries. This prevents the intentional creation of duplicate records in your audit trail.
+                            </p>
+                        </div>
+                    </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+</div>
+
+<!-- ── Global Modals ─────────────────────────────────────── -->
+
+<!-- Upload Notes Modal -->
+<div id="upload-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+    <div id="modal-box" class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-all duration-300 scale-95 opacity-0">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+            <h2 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">publish</span> Upload Accountable Resource
+            </h2>
+            <button id="close-upload-modal" class="text-slate-400 hover:text-slate-600 transition-colors"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <form id="upload-form" class="p-6 space-y-4">
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Title</label>
+                <input type="text" id="note-title" required placeholder="e.g., Unit 3: Transformers" 
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-primary/20 outline-none">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Semester</label>
+                    <select id="modal-semester" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none">
+                        <option value="">Select</option>
+                        <option value="Semester I">Semester I</option>
+                        <option value="Semester II">Semester II</option>
+                        <option value="Semester III">Semester III</option>
+                        <option value="Semester IV">Semester IV</option>
+                        <option value="Semester V">Semester V</option>
+                        <option value="Semester VI">Semester VI</option>
+                        <option value="Semester VII">Semester VII</option>
+                        <option value="Semester VIII">Semester VIII</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Subject</label>
+                    <select id="modal-subject" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none">
+                        <option value="">Pick Semester First</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Description (Optional)</label>
+                <textarea id="note-desc" rows="2" placeholder="Brief context about this note..." class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none resize-none"></textarea>
+            </div>
+            <div>
+                <label for="note-file" id="drop-zone" class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl p-6 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all group">
+                    <span class="material-symbols-outlined text-4xl text-slate-300 group-hover:text-primary transition-colors">cloud_upload</span>
+                    <p id="file-name-display" class="text-sm font-bold text-slate-500 mt-2">Click to browse file</p>
+                    <input type="file" id="note-file" class="hidden" accept=".pdf,image/*">
+                </label>
+            </div>
+            <button type="submit" id="submit-upload" class="w-full py-4 bg-primary text-white rounded-2xl font-black text-sm hover:brightness-110 shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-[20px]">check_circle</span> Publish Note
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Note Modal -->
+<div id="edit-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+    <div id="edit-modal-box" class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-all duration-300 scale-95 opacity-0">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100 bg-slate-50/50">
+            <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                <span class="material-symbols-outlined text-amber-500">edit_note</span> Edit Resource
+            </h2>
+            <button id="close-edit-modal" class="text-slate-400 hover:text-slate-600 transition-colors"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <form id="edit-form" class="p-6 space-y-4">
+            <input type="hidden" id="edit-note-id">
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Title</label>
+                <input type="text" id="edit-note-title" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Description</label>
+                <textarea id="edit-note-desc" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none resize-none"></textarea>
+            </div>
+            <button type="submit" class="w-full py-4 bg-amber-500 text-white rounded-2xl font-black text-sm hover:brightness-110 transition-all flex items-center justify-center gap-2 uppercase tracking-wide">
+                Save Changes
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Uploader Info Popover (Floating) -->
+<div id="uploader-popover" class="fixed z-[110] hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl p-4 w-60 pointer-events-none transition-all duration-200 opacity-0 translate-y-2">
+    <div class="flex items-center gap-3 mb-3">
+        <div id="pop-avatar" class="size-10 bg-primary text-white rounded-full flex items-center justify-center font-black text-lg">?</div>
+        <div>
+            <p id="pop-name" class="text-sm font-black text-slate-900 dark:text-white">—</p>
+            <p id="pop-role" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">—</p>
+        </div>
+    </div>
+    <div class="space-y-2">
+        <div class="flex items-center justify-between text-xs pb-2 border-b border-slate-100 dark:border-slate-800">
+            <span class="text-slate-400 font-semibold">Email</span>
+            <span id="pop-email" class="font-bold text-slate-700 dark:text-slate-300">...</span>
+        </div>
+        <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-semibold">Class</span>
+            <span id="pop-class" class="font-bold text-slate-700 dark:text-slate-300">...</span>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Announcement Modal -->
+<div id="edit-ann-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+    <div id="edit-ann-modal-box" class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-all duration-300 scale-95 opacity-0">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100 bg-slate-50/50">
+            <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-500">campaign</span> Update Global Broadcast
+            </h2>
+            <button onclick="window.closeEditAnnModal()" class="text-slate-400 hover:text-slate-600 transition-colors"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <form id="edit-ann-form" class="p-6 space-y-4">
+            <input type="hidden" id="edit-ann-id">
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Title</label>
+                <input type="text" id="edit-ann-title" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 ml-1">Update Message</label>
+                <textarea id="edit-ann-body" rows="4" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm outline-none resize-none"></textarea>
+            </div>
+            <button type="submit" class="w-full py-4 bg-primary text-white rounded-2xl font-black text-sm hover:brightness-110 transition-all flex items-center justify-center gap-2 uppercase tracking-wide">
+                Overwrite Broadcast
+            </button>
+        </form>
+    </div>
+
+    <!-- Exam Analytics Modal -->
+    <div id="exam-analytics-modal" class="fixed inset-0 z-[200] hidden flex flex-col bg-slate-100 dark:bg-slate-900 border-none overflow-hidden">
+        
+        <header class="h-16 px-6 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between shrink-0 shadow-sm relative z-10">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-indigo-500 text-3xl">query_stats</span>
+                <div>
+                    <h2 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest" id="analytics-exam-title">Exam Analysis</h2>
+                    <p class="text-xs font-bold text-slate-400" id="analytics-exam-subject">Loading Subject...</p>
+                </div>
+            </div>
+            <button onclick="document.getElementById('exam-analytics-modal').classList.add('hidden')" class="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 transition-colors uppercase tracking-widest text-[10px] font-black flex items-center gap-1">
+                Close <span class="material-symbols-outlined text-[14px]">close</span>
+            </button>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-6 lg:p-10 no-scrollbar space-y-8">
+            <!-- Top KPIs -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Total Assigned</p>
+                    <p class="text-3xl font-black text-indigo-600 dark:text-indigo-400" id="stat-total-assigned">0</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Total Attended</p>
+                    <p class="text-3xl font-black text-green-500" id="stat-total-attended">0</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Not Attended</p>
+                    <p class="text-3xl font-black text-amber-500" id="stat-total-absent">0</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Average Score</p>
+                    <p class="text-3xl font-black text-purple-500" id="stat-avg-score">0</p>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col h-80">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-500 mb-4 text-center">Engagement Rate</h3>
+                    <div class="relative flex-1 w-full flex items-center justify-center">
+                        <canvas id="engagementChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col h-80">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-500 mb-4 text-center">Score Distribution</h3>
+                    <div class="relative flex-1 w-full">
+                        <canvas id="scoreDistChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Candidates Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Attended List -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden flex flex-col h-[500px]">
+                    <div class="p-4 bg-green-50 dark:bg-green-900/10 border-b border-green-100 dark:border-green-900/20">
+                        <h3 class="text-xs font-black uppercase tracking-widest text-green-700 dark:text-green-400 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px]">how_to_reg</span> Attended Candidates
+                        </h3>
+                    </div>
+                    <div class="flex-1 overflow-y-auto no-scrollbar p-0 bg-slate-50 dark:bg-slate-900/50">
+                        <ul id="analytics-attended-list" class="divide-y divide-slate-200 dark:divide-slate-800">
+                            <!-- Items populated by JS -->
+                            <li class="p-8 text-center text-slate-400 italic text-sm">No attendees yet.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Absent List -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden flex flex-col h-[500px]">
+                    <div class="p-4 bg-red-50 dark:bg-red-900/10 border-b border-red-100 dark:border-red-900/20">
+                        <h3 class="text-xs font-black uppercase tracking-widest text-red-700 dark:text-red-400 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px]">person_off</span> Absent Candidates
+                        </h3>
+                    </div>
+                    <div class="flex-1 overflow-y-auto no-scrollbar p-0 bg-slate-50 dark:bg-slate-900/50">
+                        <ul id="analytics-absent-list" class="divide-y divide-slate-200 dark:divide-slate-800">
+                            <!-- Items populated by JS -->
+                            <li class="p-8 text-center text-slate-400 italic text-sm">Validating attendees...</li>
+                        </ul>
+                    </div>
+                </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Candidate Drilldown Modal -->
+    <div id="candidate-modal" class="fixed inset-0 z-[300] hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col scale-in">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+                <div class="flex items-center gap-4">
+                    <div class="size-12 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 rounded-full flex items-center justify-center text-2xl font-black" id="cand-avatar">ST</div>
+                    <div>
+                        <h3 class="text-lg font-black text-slate-900 dark:text-white tracking-tight" id="cand-name">Student Name</h3>
+                        <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Individual Analytics</p>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('candidate-modal').classList.add('hidden')" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-500">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="p-8 grid grid-cols-2 gap-8 space-y-0">
+                <div class="space-y-6">
+                    <div>
+                        <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest">Total Time Taken</p>
+                        <p class="text-2xl font-black text-slate-800 dark:text-white" id="cand-time">00:00</p>
+                    </div>
+                     <div>
+                        <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest">Score Accuracy</p>
+                        <p class="text-2xl font-black text-slate-800 dark:text-white"><span id="cand-score" class="text-green-500">0</span> <span class="text-sm font-medium text-slate-400">/ <span id="cand-max">0</span></span></p>
+                    </div>
+                     <div>
+                        <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest text-red-500 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">warning</span> Integrity Logs</p>
+                        <p class="text-2xl font-black" id="cand-strikes">0 <span class="text-sm font-bold text-slate-400">Strikes</span></p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center relative">
+                    <canvas id="candChart" class="w-full h-full max-h-48"></canvas>
+                </div>
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-800 text-center border-t border-slate-200 dark:border-slate-700">
+                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold" id="cand-timestamp">Submitted: </p>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script type="module" src="./assets/js/analytics.js"></script>
+    <script type="module" src="./assets/js/faculty.js"></script>
+    <script type="module" src="./assets/js/analytics-engine.js"></script>
+    <script type="module" src="./assets/js/layout.js"></script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0056b2",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1923",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>EduBridge Student Dashboard</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 bg-white dark:bg-background-dark px-6 lg:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 flex items-center justify-center bg-primary text-white rounded-lg">
+<span class="material-symbols-outlined text-xl">school</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">EduBridge</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 lg:gap-8 items-center">
+<label class="hidden md:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-slate-100 dark:bg-slate-800">
+<div class="text-slate-500 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:outline-0 focus:ring-0 h-full placeholder:text-slate-500 px-4 text-sm font-normal" placeholder="Search courses, tasks..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- Sidebar Navigation -->
+<aside class="hidden lg:flex flex-col h-screen w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 px-4 sticky top-16">
+<div class="flex items-center gap-3 px-2 mb-8">
+<img alt="User profile" class="size-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxbBZkD5amNkrrvAiMTTkN5oIk-FYDwSJGSo2_6fJtMHOWBexbmtNtz4qsQpGyilF0BKvNIFFoSenzAqZ5gq24xGJn8-F3FTzB5hK4wRWAnmR2ZvDJEizJqT63VKOyMOWisjZbvbK-nwopM7eMph51HJJbnW93mUCxjyxavE-O2__q-GzBQoBNFznI_EIStWZuGaYO4T8InbITNW5rx-YZee8mSOZt9fpzGAvsLX9_KMMUsvLIegzcxgQm-vdcpp2E_xqkj0BKCH5E"/>
+<div class="flex flex-col overflow-hidden">
+<h1 class="text-blue-800 dark:text-blue-300 text-sm font-bold truncate">EduBridge</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs truncate">Learning Portal</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1 font-sans text-sm font-medium flex-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded transition-all text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-r-4 border-blue-700 dark:border-blue-400 opacity-90" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded transition-colors duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">school</span>
+<span>Courses</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded transition-colors duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span>Assignments</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded transition-colors duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span>Quizzes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded transition-colors duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Study Notes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded transition-colors duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">chat</span>
+<span>Chat</span>
+</a>
+<div class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
+<a class="flex items-center gap-3 px-4 py-3 rounded transition-colors duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded transition-colors duration-200 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+<div class="max-w-6xl mx-auto space-y-8">
+<!-- Welcome Section -->
+<div class="flex flex-col gap-2">
+<h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">Student Dashboard</h2>
+<p class="text-slate-500 dark:text-slate-400">Welcome back! Here's your academic overview and upcoming priorities.</p>
+</div>
+<!-- Academic Priorities Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Upcoming Deadlines -->
+<div class="bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-slate-800 dark:text-slate-200">Upcoming Deadlines</h3>
+<span class="material-symbols-outlined text-primary">event_upcoming</span>
+</div>
+<div class="space-y-3">
+<div class="p-3 bg-red-50 dark:bg-red-900/10 border-l-4 border-red-500 rounded">
+<p class="text-xs font-bold text-red-600 dark:text-red-400">TODAY, 11:59 PM</p>
+<p class="text-sm font-medium">CS101 Final Project Draft</p>
+</div>
+<div class="p-3 bg-slate-50 dark:bg-slate-800 rounded">
+<p class="text-xs font-bold text-slate-500">TOMORROW</p>
+<p class="text-sm font-medium">Data Structures Quiz</p>
+</div>
+</div>
+</div>
+<!-- Pending Assignments -->
+<div class="bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-slate-800 dark:text-slate-200">Pending Assignments</h3>
+<span class="material-symbols-outlined text-primary">pending_actions</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">MA</div>
+<div class="flex-1">
+<p class="text-sm font-medium">Calculus III Problem Set</p>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-1 rounded-full mt-1">
+<div class="bg-primary h-1 rounded-full w-3/4"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">PH</div>
+<div class="flex-1">
+<p class="text-sm font-medium">Physics Lab Report</p>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-1 rounded-full mt-1">
+<div class="bg-primary h-1 rounded-full w-1/4"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Quiz Activity -->
+<div class="bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-slate-800 dark:text-slate-200">Recent Quiz Activity</h3>
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between text-sm">
+<span class="text-slate-600 dark:text-slate-400">Intro to AI</span>
+<span class="font-bold text-green-600">92/100</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<span class="text-slate-600 dark:text-slate-400">Networking</span>
+<span class="font-bold text-green-600">85/100</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<span class="text-slate-600 dark:text-slate-400">Database Systems</span>
+<span class="font-bold text-orange-500">78/100</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats Tracking Grid -->
+<div>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">monitoring</span>
+                            Activity Tracking
+                        </h3>
+<div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 text-center lg:text-left">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider mb-1">Time Spent</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-slate-100">12.5h</p>
+<p class="text-xs text-green-600 font-bold mt-2 flex items-center justify-center lg:justify-start gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +15%
+                                </p>
+</div>
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 text-center lg:text-left">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider mb-1">Classes Joined</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-slate-100">6</p>
+<p class="text-xs text-slate-400 font-bold mt-2">0% change</p>
+</div>
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 text-center lg:text-left">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider mb-1">Notes Downloaded</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-slate-100">24</p>
+<p class="text-xs text-green-600 font-bold mt-2 flex items-center justify-center lg:justify-start gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +8%
+                                </p>
+</div>
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 text-center lg:text-left">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider mb-1">Assignments</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-slate-100">18</p>
+<p class="text-xs text-green-600 font-bold mt-2 flex items-center justify-center lg:justify-start gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +2%
+                                </p>
+</div>
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-slate-200 dark:border-slate-800 text-center lg:text-left">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider mb-1">Quiz Attempts</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-slate-100">9</p>
+<p class="text-xs text-green-600 font-bold mt-2 flex items-center justify-center lg:justify-start gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span> +5%
+                                </p>
+</div>
+</div>
+</div>
+<!-- Main Study Area Preview -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<div class="bg-primary/5 dark:bg-primary/10 rounded-2xl p-8 flex flex-col items-start gap-4 border border-primary/10">
+<div class="size-12 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-3xl">auto_stories</span>
+</div>
+<h4 class="text-xl font-bold">Resume Learning</h4>
+<p class="text-slate-600 dark:text-slate-400">Continue where you left off in "Advanced Data Structures - Module 4: Graph Algorithms".</p>
+<button class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-xl transition-all">Start Session</button>
+</div>
+<div class="bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold flex items-center gap-2 text-slate-900 dark:text-slate-100">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+                                    Today's Class Schedule
+                                </h3>
+<span class="text-xs font-semibold px-2 py-1 bg-green-100 text-green-700 rounded-full dark:bg-green-900/20 dark:text-green-400">Oct 24, 2024</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-colors">
+<div class="flex flex-col gap-1">
+<p class="text-xs font-bold text-primary uppercase tracking-wider">09:00 AM - 10:30 AM</p>
+<h5 class="text-sm font-bold text-slate-800 dark:text-slate-200">Advanced Mathematics - Calculus II</h5>
+<p class="text-xs text-slate-500">Prof. Sarah Jenkins</p>
+</div>
+<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all">Join Session</button>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-colors">
+<div class="flex flex-col gap-1">
+<p class="text-xs font-bold text-primary uppercase tracking-wider">11:00 AM - 12:30 PM</p>
+<h5 class="text-sm font-bold text-slate-800 dark:text-slate-200">Introduction to Data Science</h5>
+<p class="text-xs text-slate-500">Dr. Robert Chen</p>
+</div>
+<button class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">Join Session</button>
+</div>
+</div>
+<a class="mt-2 text-center text-xs font-bold text-primary hover:underline" href="#">View Full Weekly Schedule</a>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

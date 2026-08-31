@@ -153,7 +153,7 @@ async function loadMentees() {
                         <p class="text-[9px] font-black uppercase tracking-widest text-indigo-500 mt-1">Active Peer Student</p>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-3">
                     <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-3 text-center border border-slate-100 dark:border-slate-800">
                         <span class="material-symbols-outlined text-indigo-600 text-[18px] mb-1">timer</span>
                         <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Active Time</p>

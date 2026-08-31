@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EduBridge | The Ultimate Learning Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/css/landing.css">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0056b2",
+                        "accent": "#00d4ff"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Premium Preloader Styles */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #050a10;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1.2s cubic-bezier(0.85, 0, 0.15, 1), visibility 1.2s;
+        }
+
+        .loader-ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: relative;
+            background: radial-gradient(circle, rgba(0, 86, 178, 0.1) 0%, transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .loader-logo-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(0, 86, 178, 0.3);
+            border-radius: 50%;
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(.33);
+                opacity: 1;
+            }
+
+            80%,
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .loader-bar-container {
+            width: 240px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 100px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 24px;
+        }
+
+        .loader-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #0056b2, #00d4ff);
+            border-radius: 100px;
+            transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-ring">
+            <div class="loader-logo-pulse"></div>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="#00d4ff" />
+                <path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="#00d4ff" />
+            </svg>
+        </div>
+        <p class="text-[10px] font-black uppercase tracking-[0.4em] text-white/40">Edu Bridge Experience</p>
+        <div class="loader-bar-container">
+            <div class="loader-progress" id="loader-progress"></div>
+        </div>
+        <p class="text-[9px] font-bold text-blue-500/60 mt-4 tabular-nums" id="loader-text">0%</p>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <nav
+        class="fixed top-0 left-0 w-full z-[100] h-20 flex items-center justify-between px-8 backdrop-blur-xl bg-black/40 border-b border-white/10">
+        <div class="flex items-center gap-3">
+            <div class="size-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white" />
+                    <path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white" />
+                </svg>
+            </div>
+            <span class="text-xl font-black tracking-tight text-white">Edu Bridge</span>
+        </div>
+
+        <div class="hidden md:flex items-center gap-12">
+            <a href="#stats"
+                class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-all">Impact</a>
+            <a href="#features"
+                class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-all">Features</a>
+            <a href="#process"
+                class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-all">Process</a>
+        </div>
+
+        <button id="nav-get-started"
+            class="px-6 py-2.5 bg-white text-black text-[11px] font-black uppercase tracking-widest rounded-full hover:bg-blue-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-xl">
+            Get Started
+        </button>
+    </nav>
+
+    <!-- Hero Animation Container -->
+    <div class="hero">
+        <div class="canvas-container">
+            <canvas id="animation-canvas"></canvas>
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title" id="hero-title">Beyond <br> Learning.</h1>
+            <div id="hero-cta" style="opacity: 0; transform: translateY(20px);">
+                <button id="hero-explore" class="cta-button">Explore Edu Bridge</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <section id="stats" class="section border-y border-white/5 bg-black/50">
+        <div class="container">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center reveal">
+                    <p id="stat-students" class="text-4xl font-black text-white mb-2">...</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500">Active Students</p>
+                </div>
+                <div class="text-center reveal" style="transition-delay: 0.1s;">
+                    <p id="stat-notes" class="text-4xl font-black text-white mb-2">...</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500">Resource Notes</p>
+                </div>
+                <div class="text-center reveal" style="transition-delay: 0.2s;">
+                    <p class="text-4xl font-black text-white mb-2">24/7</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500">Peer Support</p>
+                </div>
+                <div class="text-center reveal" style="transition-delay: 0.3s;">
+                    <p class="text-4xl font-black text-white mb-2">100%</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-slate-500">Secure Access</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <div class="container">
+            <div class="reveal mb-20 text-center max-w-2xl mx-auto">
+                <p class="text-primary text-xs font-black uppercase tracking-[0.3em] mb-4">Core Ecosystem</p>
+                <h2 class="text-4xl lg:text-5xl font-black mb-6">Engineered for Excellence.</h2>
+                <p class="text-slate-500 text-sm leading-relaxed">Our platform bridges the gap between traditional
+                    learning and modern academic success with a suite of professional tools.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal group">
+                    <div class="feature-card-inner">
+                        <div class="feature-badge">PRO</div>
+                        <span class="feature-icon material-symbols-outlined">auto_stories</span>
+                        <h3>Smart Notes Repo</h3>
+                        <p>Access high-quality academic notes organized by semester and subject. Direct downloads and
+                            instant previews for PDF/Images.</p>
+                        <div class="feature-footer">
+                            <span class="text-[10px] font-bold text-primary">RESOURCES</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card reveal group" style="transition-delay: 0.1s;">
+                    <div class="feature-card-inner">
+                        <div class="feature-badge">LIVE</div>
+                        <span class="feature-icon material-symbols-outlined">chat_bubble</span>
+                        <h3>Instant Chat</h3>
+                        <p>Connect with peers instantly. Fast, reactive messaging system with history persistence for
+                            seamless academic discussions.</p>
+                        <div class="feature-footer">
+                            <span class="text-[10px] font-bold text-blue-400">CONNECTIVITY</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card reveal group" style="transition-delay: 0.2s;">
+                    <div class="feature-card-inner">
+                        <div class="feature-badge">SMART</div>
+                        <span class="feature-icon material-symbols-outlined">monitoring</span>
+                        <h3>Smart Analytics</h3>
+                        <p>Track your real engagement time with surgical precision. Intelligent activity monitoring
+                            follows your progress across the portal.</p>
+                        <div class="feature-footer">
+                            <span class="text-[10px] font-bold text-accent">DATA</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card reveal group" style="transition-delay: 0.3s;">
+                    <div class="feature-card-inner">
+                        <div class="feature-badge">CORE</div>
+                        <span class="feature-icon material-symbols-outlined">quiz</span>
+                        <h3>Live Quizzes</h3>
+                        <p>Test your knowledge with integrated assessments. Detailed tracking of starts and completions
+                            to measure your growth.</p>
+                        <div class="feature-footer">
+                            <span class="text-[10px] font-bold text-slate-400">ASSESSMENT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="section bg-white/5">
+        <div class="container text-center">
+            <div class="reveal mb-16">
+                <p class="text-primary text-xs font-black uppercase tracking-[0.3em] mb-4">The Workflow</p>
+                <h2 class="text-4xl font-black mb-12">How Edu Bridge Works.</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="reveal">
+                    <div
+                        class="size-16 rounded-full border border-white/10 flex items-center justify-center text-3xl font-black mb-6 mx-auto bg-black">
+                        1</div>
+                    <h4 class="text-xl font-bold mb-4">Connect Portal</h4>
+                    <p class="text-slate-500 text-sm">Join the ecosystem by authenticating your student credentials
+                        securely.</p>
+                </div>
+                <div class="reveal" style="transition-delay: 0.1s;">
+                    <div
+                        class="size-16 rounded-full border border-white/10 flex items-center justify-center text-3xl font-black mb-6 mx-auto bg-black">
+                        2</div>
+                    <h4 class="text-xl font-bold mb-4">Master Resources</h4>
+                    <p class="text-slate-500 text-sm">Access curated notes, participate in chats, and take interactive
+                        quizzes.</p>
+                </div>
+                <div class="reveal" style="transition-delay: 0.2s;">
+                    <div
+                        class="size-16 rounded-full border border-white/10 flex items-center justify-center text-3xl font-black mb-6 mx-auto bg-black">
+                        3</div>
+                    <h4 class="text-xl font-bold mb-4">Achieve Excellence</h4>
+                    <p class="text-slate-500 text-sm">Monitor your progress through the analytics dashboard and excel in
+                        academics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="section relative overflow-hidden">
+        <div class="absolute inset-0 bg-blue-600/5 blur-[120px] pointer-events-none"></div>
+        <div class="container bg-black border border-white/5 rounded-[40px] p-12 lg:p-24 text-center relative z-10">
+            <div class="reveal">
+                <h2 class="text-5xl lg:text-7xl font-black mb-8 leading-tight">Ready to bridge the gap?</h2>
+                <p class="text-slate-400 text-lg mb-12 max-w-2xl mx-auto">Join thousands of students who have already
+                    transformed their academic workflow with Edu Bridge.</p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                    <button id="footer-open-portal" class="cta-button w-full sm:w-auto">Open Your Portal</button>
+                    <a href="chat.html"
+                        class="px-8 py-[18px] border border-white/10 rounded-full font-bold hover:bg-white hover:text-black transition-all w-full sm:w-auto">Contact
+                        Support</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth & Onboarding Modal -->
+    <div id="auth-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-500 p-4"
+        style="background:rgba(0,0,0,0.75);backdrop-filter:blur(20px);">
+        <div id="auth-modal-inner"
+            style="background:#fff;border-radius:32px;width:100%;max-width:560px;position:relative;transform:scale(0.95);transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 40px 120px rgba(0,0,0,0.4);overflow:hidden;">
+
+            <!-- Progress Bar -->
+            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#f1f5f9;">
+                <div id="auth-progress"
+                    style="height:100%;width:33%;background:linear-gradient(90deg,#0056b2,#3b82f6);transition:width 0.6s ease;">
+                </div>
+            </div>
+
+            <!-- Close -->
+            <button onclick="closeAuthModal()"
+                style="position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;background:#f1f5f9;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:#64748b;z-index:10;transition:all 0.2s;"
+                onmouseover="this.style.background='#ef4444';this.style.color='white'"
+                onmouseout="this.style.background='#f1f5f9';this.style.color='#64748b'">&times;</button>
+
+            <div id="modal-body" style="padding:48px 48px 48px;">
+
+                <!-- Step 1: Login -->
+                <div id="step-login">
+                    <div style="text-align:center;margin-bottom:40px;">
+                        <div
+                            style="width:80px;height:80px;background:linear-gradient(135deg,#0056b2,#3b82f6);border-radius:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 16px 48px rgba(0,86,178,0.3);">
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M17 8C8 10 5.9 16.17 3.82 19.82C3.31 20.72 2 20.32 2 19.27V5a1 1 0 0 1 1-1h15.27c1.05 0 1.45 1.31.55 1.82L17 8z"
+                                    fill="white" opacity="0.7" />
+                                <path d="M2 12l6.5 3.5L22 6" stroke="white" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <h2 style="font-size:28px;font-weight:900;color:#0f172a;margin:0 0 8px;letter-spacing:-0.5px;">
+                            Edu Bridge Portal</h2>
+                        <p style="color:#64748b;font-size:15px;margin:0;">Sign in with your official campus email</p>
+                    </div>
+
+                    <button id="google-login-btn"
+                        style="width:100%;display:flex;align-items:center;justify-content:center;gap:14px;background:white;border:2px solid #e2e8f0;border-radius:16px;padding:18px 24px;font-size:16px;font-weight:700;color:#0f172a;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 16px rgba(0,0,0,0.06);"
+                        onmouseover="this.style.borderColor='#0056b2';this.style.boxShadow='0 8px 32px rgba(0,86,178,0.15)'"
+                        onmouseout="this.style.borderColor='#e2e8f0';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.06)'">
+                        <img src="https://www.google.com/favicon.ico" width="24" height="24" alt="G">
+                        Continue with Google
+                    </button>
+
+                    <div
+                        style="margin-top:20px;padding:16px 20px;background:#fef9ec;border:1.5px solid #fcd34d;border-radius:14px;display:flex;align-items:flex-start;gap:12px;">
+                        <span style="font-size:20px;">⚠️</span>
+                        <p style="font-size:12px;font-weight:600;color:#92400e;margin:0;line-height:1.5;">Only
+                            <strong>@svce.ac.in</strong> email addresses are authorized for this platform.</p>
+                    </div>
+                    <p id="login-error"
+                        style="display:none;color:#ef4444;font-size:13px;font-weight:700;text-align:center;margin-top:12px;">
+                    </p>
+                </div>
+
+                <!-- Step 2: Role Selection -->
+                <div id="step-role" style="display:none;">
+                    <div style="text-align:center;margin-bottom:32px;">
+                        <h2 style="font-size:26px;font-weight:900;color:#0f172a;margin:0 0 8px;">Who are you?</h2>
+                        <p id="user-email-display" style="font-size:13px;color:#0056b2;font-weight:700;margin:0;"></p>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:12px;">
+                        <button onclick="selectRole('student')"
+                            style="display:flex;align-items:center;gap:20px;padding:20px 24px;background:white;border:2px solid #e2e8f0;border-radius:18px;cursor:pointer;text-align:left;transition:all 0.2s;"
+                            onmouseover="this.style.borderColor='#0056b2';this.style.background='#eff6ff'"
+                            onmouseout="this.style.borderColor='#e2e8f0';this.style.background='white'">
+                            <div
+                                style="width:52px;height:52px;background:#eff6ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">
+                                🎓</div>
+                            <div>
+                                <p style="font-size:16px;font-weight:800;color:#0f172a;margin:0 0 4px;">Student</p>
+                                <p style="font-size:13px;color:#64748b;margin:0;">Access notes, quizzes, assignments
+                                    &amp; chat</p>
+                            </div>
+                        </button>
+                        <button onclick="selectRole('mentor')"
+                            style="display:flex;align-items:center;gap:20px;padding:20px 24px;background:white;border:2px solid #e2e8f0;border-radius:18px;cursor:pointer;text-align:left;transition:all 0.2s;"
+                            onmouseover="this.style.borderColor='#0056b2';this.style.background='#eff6ff'"
+                            onmouseout="this.style.borderColor='#e2e8f0';this.style.background='white'">
+                            <div
+                                style="width:52px;height:52px;background:#eff6ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">
+                                👥</div>
+                            <div>
+                                <p style="font-size:16px;font-weight:800;color:#0f172a;margin:0 0 4px;">Mentor</p>
+                                <p style="font-size:13px;color:#64748b;margin:0;">Guide students and help manage content
+                                </p>
+                            </div>
+                        </button>
+                        <button onclick="selectRole('faculty')"
+                            style="display:flex;align-items:center;gap:20px;padding:20px 24px;background:white;border:2px solid #e2e8f0;border-radius:18px;cursor:pointer;text-align:left;transition:all 0.2s;"
+                            onmouseover="this.style.borderColor='#0056b2';this.style.background='#eff6ff'"
+                            onmouseout="this.style.borderColor='#e2e8f0';this.style.background='white'">
+                            <div
+                                style="width:52px;height:52px;background:#eff6ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">
+                                🏫</div>
+                            <div>
+                                <p style="font-size:16px;font-weight:800;color:#0f172a;margin:0 0 4px;">Faculty</p>
+                                <p style="font-size:13px;color:#64748b;margin:0;">Official academic staff &amp; content
+                                    management</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Onboarding Form -->
+                <div id="step-form" style="display:none;">
+                    <div style="text-align:center;margin-bottom:32px;">
+                        <h2 style="font-size:26px;font-weight:900;color:#0f172a;margin:0 0 8px;">Complete Your Profile
+                        </h2>
+                        <p style="font-size:13px;color:#64748b;margin:0;">Just a few more details to set up your account
+                        </p>
+                    </div>
+                    <form id="onboarding-form" style="max-height:55vh;overflow-y:auto;padding-right:4px;">
+                        <!-- Personal Info -->
+                        <div style="margin-bottom:24px;">
+                            <p
+                                style="font-size:11px;font-weight:800;color:#0056b2;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 14px;padding-bottom:8px;border-bottom:1.5px solid #e2e8f0;">
+                                👤 Personal Information</p>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                                <div style="grid-column:1/-1;">
+                                    <label
+                                        style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:6px;">Full
+                                        Name *</label>
+                                    <input name="name" required type="text" placeholder="As per college records"
+                                        style="width:100%;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;transition:border-color 0.2s;color:#0f172a;"
+                                        onfocus="this.style.borderColor='#0056b2';this.style.background='white'"
+                                        onblur="this.style.borderColor='#e2e8f0';this.style.background='#f8fafc'">
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:6px;">Mobile
+                                        *</label>
+                                    <input name="contact_number" required type="tel" placeholder="+91 XXXXX XXXXX"
+                                        style="width:100%;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;transition:border-color 0.2s;color:#0f172a;"
+                                        onfocus="this.style.borderColor='#0056b2';this.style.background='white'"
+                                        onblur="this.style.borderColor='#e2e8f0';this.style.background='#f8fafc'">
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:6px;">Register
+                                        No.</label>
+                                    <input name="register_number" type="text" placeholder="e.g. 2127CS001"
+                                        style="width:100%;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;transition:border-color 0.2s;color:#0f172a;"
+                                        onfocus="this.style.borderColor='#0056b2';this.style.background='white'"
+                                        onblur="this.style.borderColor='#e2e8f0';this.style.background='#f8fafc'">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Academic Info (hidden for faculty) -->
+                        <div id="student-only-fields">
+                            <p
+                                style="font-size:11px;font-weight:800;color:#0056b2;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 14px;padding-bottom:8px;border-bottom:1.5px solid #e2e8f0;">
+                                🏫 Academic Details</p>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                                <div>
+                                    <label
+                                        style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:6px;">Section</label>
+                                    <input name="section" type="text" placeholder="e.g. CSE-A"
+                                        style="width:100%;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;color:#0f172a;"
+                                        onfocus="this.style.borderColor='#0056b2';this.style.background='white'"
+                                        onblur="this.style.borderColor='#e2e8f0';this.style.background='#f8fafc'">
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:6px;">Year</label>
+                                    <select name="year"
+                                        style="width:100%;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;color:#0f172a;">
+                                        <option value="1">1st Year</option>
+                                        <option value="2">2nd Year</option>
+                                        <option value="3">3rd Year</option>
+                                        <option value="4">4th Year</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:6px;">Stay</label>
+                                    <select name="hostler"
+                                        style="width:100%;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;color:#0f172a;">
+                                        <option value="Day Scholar">Day Scholar</option>
+                                        <option value="Hosteller">Hosteller</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:6px;">Faculty
+                                        Advisor</label>
+                                    <input name="faculty_advisor" type="text" placeholder="Advisor name"
+                                        style="width:100%;padding:14px 16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box;color:#0f172a;"
+                                        onfocus="this.style.borderColor='#0056b2';this.style.background='white'"
+                                        onblur="this.style.borderColor='#e2e8f0';this.style.background='#f8fafc'">
+                                </div>
+                            </div>
+                        </div>
+                        <p id="form-error"
+                            style="display:none;color:#ef4444;font-size:13px;font-weight:700;text-align:center;margin-top:16px;">
+                        </p>
+                        <button type="submit" id="onboarding-submit-btn"
+                            style="width:100%;margin-top:24px;padding:18px;background:linear-gradient(135deg,#0056b2,#3b82f6);color:white;border:none;border-radius:16px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:0.02em;box-shadow:0 8px 32px rgba(0,86,178,0.3);transition:all 0.2s;"
+                            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 40px rgba(0,86,178,0.4)'"
+                            onmouseout="this.style.transform='none';this.style.boxShadow='0 8px 32px rgba(0,86,178,0.3)'">
+                            Join Edu Bridge →
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Acknowledgement Hub -->
+    <section class="py-32 bg-slate-950 relative overflow-hidden">
+        <!-- Background Accents -->
+        <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
+        <div class="absolute bottom-0 left-0 w-[800px] h-[800px] bg-indigo-600/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/3"></div>
+
+        <div class="max-w-6xl mx-auto px-8 relative z-10">
+            <div class="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[4rem] p-12 lg:p-20 shadow-2xl">
+                <div class="flex flex-col lg:flex-row gap-20 items-start">
+                    <!-- Creator Identity -->
+                    <div class="lg:w-1/3 space-y-10">
+                        <div class="space-y-6">
+                            <div class="size-20 bg-blue-600 text-white rounded-[2rem] flex items-center justify-center font-black text-3xl tracking-tighter shadow-2xl shadow-blue-600/40 transition-transform hover:scale-105 duration-500">SBNG</div>
+                            <div class="space-y-2">
+                                <h3 class="text-3xl font-black text-white tracking-tighter uppercase leading-none">Nanda Kishore Sreejith</h3>
+                                <p class="text-blue-400 text-[11px] font-black uppercase tracking-[0.3em]">Platform Architect & Lead Developer</p>
+                            </div>
+                        </div>
+                        <div class="pt-8 border-t border-white/10 space-y-1">
+                            <p class="text-sm font-bold text-slate-200">Computer Science branch</p>
+                            <p class="text-[11px] text-slate-500 uppercase font-black tracking-widest">Class of 2024-2028</p>
+                            <p class="text-[11px] text-slate-500 uppercase font-black tracking-widest">Sri Venkateswara College Of Engineering</p>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-2/3 space-y-12">
+                        <div class="space-y-8">
+                            <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em]">Institutional Gratitude</h4>
+                            <p class="text-xl md:text-2xl font-medium text-slate-300 leading-relaxed italic opacity-90">
+                                "I would like to thank Dr. R ANITHA (Professor and Head/CSE) and R K KAPILAVANI (Assistant Professor/CSE) for the opportunity given to me to make this wonderful platform. Heartfelt thanks to my family for their constant support."
+                            </p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 pt-10 border-t border-white/10">
+                            <div class="space-y-2">
+                                <p class="text-xl font-black text-white uppercase tracking-tight">Dr. R ANITHA</p>
+                                <p class="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">Professor and Head / CSE</p>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-xl font-black text-white uppercase tracking-tight">R K KAPILAVANI</p>
+                                <p class="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">Assistant Professor / CSE</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-20 text-center">
+                <p class="text-[10px] font-black text-slate-700 uppercase tracking-[0.5em] opacity-50 italic">Built for the future of academic management.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <!-- Scripts -->
+    <script type="module">
+        import { supabase } from './assets/js/supabase-client.js';
+        import * as auth from './assets/js/auth.js';
+
+        console.log("EduBridge Ecosystem initialized.");
+
+        // --- UI Globals ---
+        const modal = document.getElementById('auth-modal');
+        const loginBtn = document.getElementById('google-login-btn');
+        let selectedRole = 'student';
+        let currentUser = null;
+
+        async function handleAuthTrigger() {
+            console.log("Auth trigger initiated.");
+
+            // Always reset modal to clean login state before opening
+            document.getElementById('step-login').style.display = 'block';
+            document.getElementById('step-role').style.display = 'none';
+            document.getElementById('step-form').style.display = 'none';
+            document.getElementById('auth-progress').style.width = '33%';
+            const loginError = document.getElementById('login-error');
+            if (loginError) { loginError.style.display = 'none'; loginError.textContent = ''; }
+            const lb = document.getElementById('google-login-btn');
+            if (lb) { lb.disabled = false; lb.innerHTML = '<img src="https://www.google.com/favicon.ico" width="24" height="24" alt="G" style="margin-right:8px;"> Continue with Google'; }
+
+            const user = await auth.getCurrentUser();
+            if (user) {
+                // If a non-svce session is somehow lingering, clear it
+                if (!auth.validateEmail(user.email)) {
+                    await supabase.auth.signOut();
+                    openAuthModal();
+                    showLoginError('⚠️ That account is not authorized. Use your @svce.ac.in email.');
+                    return;
+                }
+                const profile = await auth.getUserProfile(user.id);
+                if (profile) {
+                    window.location.href = '/dashboard.html';
+                    return;
+                }
+                // Valid user but no profile — go to onboarding
+                openAuthModal();
+                document.getElementById('step-login').style.display = 'none';
+                document.getElementById('step-role').style.display = 'block';
+                document.getElementById('auth-progress').style.width = '66%';
+                document.getElementById('user-email-display').innerText = user.email;
+                return;
+            }
+            openAuthModal();
+        }
+
+        function openAuthModal() {
+            modal.style.opacity = '1';
+            modal.style.pointerEvents = 'auto';
+            document.getElementById('auth-modal-inner').style.transform = 'scale(1)';
+        }
+
+        window.closeAuthModal = () => {
+            modal.style.opacity = '0';
+            modal.style.pointerEvents = 'none';
+            document.getElementById('auth-modal-inner').style.transform = 'scale(0.95)';
+        };
+
+        window.selectRole = (role) => {
+            selectedRole = role;
+            document.getElementById('step-role').style.display = 'none';
+            document.getElementById('step-form').style.display = 'block';
+            document.getElementById('auth-progress').style.width = '100%';
+            const studentFields = document.getElementById('student-only-fields');
+            if (role === 'faculty') studentFields.style.display = 'none';
+            else studentFields.style.display = 'block';
+        };
+
+        // --- Attachment ---
+        const authTriggers = ['nav-get-started', 'hero-explore', 'footer-open-portal'];
+        authTriggers.forEach(id => {
+            const btn = document.getElementById(id);
+            if (btn) btn.addEventListener('click', handleAuthTrigger);
+        });
+
+        // --- Auth Event Listeners ---
+        if (loginBtn) {
+            loginBtn.addEventListener('click', async () => {
+                loginBtn.disabled = true;
+                loginBtn.innerHTML = '<span style="opacity:0.7;">Redirecting to Google...</span>';
+                try {
+                    await auth.signInWithGoogle();
+                } catch (err) {
+                    console.error('Login error:', err);
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<img src="https://www.google.com/favicon.ico" width="24" height="24" alt="G"> Continue with Google';
+                    showLoginError('Sign-in failed. Please try again.');
+                }
+            });
+        }
+
+        function showLoginError(msg) {
+            const loginError = document.getElementById('login-error');
+            if (!loginError) return;
+            loginError.textContent = msg;
+            loginError.style.display = 'block';
+            // Show toast notification
+            showToast(msg);
+        }
+
+        function showToast(msg) {
+            let toast = document.getElementById('auth-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'auth-toast';
+                toast.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e293b;color:white;padding:16px 28px;border-radius:16px;font-size:14px;font-weight:700;z-index:99999;box-shadow:0 16px 48px rgba(0,0,0,0.4);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s;opacity:0;max-width:480px;text-align:center;border-left:4px solid #ef4444;';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = '🚫 ' + msg;
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+                toast.style.opacity = '1';
+            });
+            // Auto-dismiss after 4s
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                toast.style.opacity = '0';
+            }, 4000);
+        }
+
+        const initLandingAuth = async () => {
+            // --- Live Stats Fetching ---
+            try {
+                // Fetch user count
+                const { count: userCount, error: userErr } = await supabase
+                    .from('users')
+                    .select('*', { count: 'exact', head: true });
+                
+                // Fetch notes count
+                const { count: notesCount, error: notesErr } = await supabase
+                    .from('notes')
+                    .select('*', { count: 'exact', head: true });
+
+                if (!userErr) {
+                    const studentEl = document.getElementById('stat-students');
+                    if (studentEl) studentEl.textContent = userCount > 999 ? (userCount / 1000).toFixed(1) + 'K' : userCount;
+                }
+                
+                if (!notesErr) {
+                    const notesEl = document.getElementById('stat-notes');
+                    if (notesEl) notesEl.textContent = notesCount > 999 ? (notesCount / 1000).toFixed(1) + 'K' : notesCount;
+                }
+            } catch (err) {
+                console.warn("Stats fetch failed:", err);
+            }
+
+            const user = await auth.getCurrentUser();
+            if (user) {
+                // Domain Validation
+                if (!auth.validateEmail(user.email)) {
+                    // SIGN THEM OUT immediately — don't keep an invalid session
+                    await supabase.auth.signOut();
+                    // Keep modal open at step-login with clear error
+                    openAuthModal();
+                    document.getElementById('step-login').style.display = 'block';
+                    document.getElementById('step-role').style.display = 'none';
+                    document.getElementById('step-form').style.display = 'none';
+                    // Reset login button
+                    const lb = document.getElementById('google-login-btn');
+                    if (lb) { lb.disabled = false; lb.innerHTML = '<img src="https://www.google.com/favicon.ico" width="24" height="24" alt="G"> Continue with Google'; }
+                    // Show error in modal + toast
+                    showLoginError('Access denied — only @svce.ac.in emails are permitted.');
+                    return;
+                }
+
+                currentUser = user;
+                const profile = await auth.getUserProfile(user.id);
+
+                if (profile) {
+                    // Already has profile, direct to dashboard
+                    window.location.href = '/dashboard.html';
+                } else {
+                    // Start Onboarding
+                    openAuthModal();
+                    document.getElementById('step-login').style.display = 'none';
+                    document.getElementById('step-role').style.display = 'block';
+                    document.getElementById('auth-progress').style.width = '66%';
+                    document.getElementById('user-email-display').innerText = user.email;
+                }
+            }
+        };
+
+        document.getElementById('onboarding-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerText = "Saving profile...";
+
+            const formData = new FormData(e.target);
+            const profile = {
+                id: currentUser.id,
+                email: currentUser.email,
+                role: auth.isAdmin(currentUser.email) ? 'admin' : selectedRole,
+                name: formData.get('name'),
+                contact_number: formData.get('contact_number')
+            };
+
+            if (selectedRole !== 'faculty') {
+                profile.register_number = formData.get('register_number');
+                profile.year = formData.get('year');
+                profile.section = formData.get('section');
+                profile.hostler = formData.get('hostler');
+                profile.faculty_advisor = formData.get('faculty_advisor');
+            } else {
+                const isWhitelisted = await auth.checkFacultyAccess(currentUser.email);
+                if (!isWhitelisted && !auth.isAdmin(currentUser.email)) {
+                    const formError = document.getElementById('form-error');
+                    formError.textContent = "Email NOT authorized as Faculty. Contact Admin.";
+                    formError.style.display = 'block';
+                    btn.disabled = false;
+                    btn.innerText = "Join Ecosystem";
+                    return;
+                }
+            }
+
+            try {
+                await auth.saveUserProfile(profile);
+                window.location.href = '/dashboard.html';
+            } catch (err) {
+                console.error(err);
+                const fe = document.getElementById('form-error');
+                fe.textContent = "Failed to save profile. Primary key conflict or network error.";
+                fe.style.display = 'block';
+                btn.disabled = false;
+                btn.innerText = "Join Ecosystem";
+            }
+        });
+
+        // Run Check
+        initLandingAuth();
+
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN') initLandingAuth();
+        });
+
+    </script>
+    <script type="module" src="./assets/js/analytics.js" defer></script>
+    <script type="module" src="./assets/js/layout.js" defer></script>
+    <script type="module" src="./assets/js/landing.js" defer></script>
+</body>
+
+</html>

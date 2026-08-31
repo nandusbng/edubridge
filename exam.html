@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Workspace - SvceEdu Ecosystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <style>
+        body { font-family: 'Outfit', sans-serif; user-select: none; } /* Disable text selection for anti-cheat */
+        .exam-blur { filter: blur(8px) grayscale(100%); transition: filter 0.5s ease; pointer-events: none; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 h-screen w-screen overflow-hidden flex flex-col relative" oncontextmenu="return false;">
+
+    <!-- Anti-Cheat Overlay (If they tab out) -->
+    <div id="violation-overlay" class="absolute inset-0 z-50 bg-red-900/90 text-white flex-col items-center justify-center p-8 text-center hidden backdrop-blur-md">
+        <span class="material-symbols-outlined text-[100px] mb-6 text-red-400">warning</span>
+        <h1 class="text-4xl font-black uppercase tracking-widest mb-4">Integrity Violation Detected</h1>
+        <p class="text-xl opacity-90 max-w-2xl font-light mb-2">Navigating away from the Assessment Workspace is strictly prohibited.</p>
+        <p class="text-lg font-bold text-red-300">Your total inactivity count (<span id="overlay-violation-count">1</span>) has been logged in the mainframe.</p>
+        <button id="resume-exam-btn" class="mt-8 px-8 py-4 bg-white text-red-900 font-bold rounded-2xl shadow-xl hover:scale-105 transition-transform uppercase tracking-widest text-sm">Acknowledge & Resume</button>
+    </div>
+
+    <!-- Entrance Screen -->
+    <div id="entrance-screen" class="absolute inset-0 z-40 bg-indigo-900 text-white flex flex-col items-center justify-center p-8 text-center bg-[url('assets/img/grid-bg.avif')] bg-cover bg-center">
+        <div class="absolute inset-0 bg-indigo-900/80"></div>
+        <div class="relative z-10 max-w-2xl bg-white/10 p-10 rounded-[40px] border border-white/20 backdrop-blur-md shadow-2xl">
+            <span class="material-symbols-outlined text-6xl text-indigo-300 mb-6 block">assured_workload</span>
+            <h1 id="ent-title" class="text-3xl font-black mb-2 animate-pulse">Initializing Portal...</h1>
+            <p id="ent-subject" class="text-indigo-200 font-bold uppercase tracking-widest mb-6">—</p>
+            
+            <div class="space-y-4 text-left bg-black/20 p-6 rounded-2xl border border-white/10 mb-8">
+                <h3 class="font-bold text-sm text-indigo-300 uppercase tracking-widest border-b border-white/10 pb-2">Directives</h3>
+                <p id="ent-instructions" class="text-sm font-light leading-relaxed">Loading instructions...</p>
+                <div class="flex gap-4 pt-4 border-t border-white/10 justify-between">
+                     <span class="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-indigo-100 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">timer</span> <span id="ent-duration">—</span> minutes</span>
+                     <span class="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-indigo-100 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">checklist</span> <span id="ent-marks">—</span> total marks</span>
+                </div>
+            </div>
+
+            <button id="start-exam-btn" disabled class="w-full py-4 bg-indigo-500 hover:bg-indigo-400 text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-lg shadow-indigo-900/50 disabled:opacity-50 disabled:cursor-not-allowed">
+                Activate Full Screen strictly to Start
+            </button>
+            <p class="text-[9px] text-white/50 uppercase tracking-widest mt-4">By initiating, you agree to the Automated Monitoring Policies.</p>
+        </div>
+    </div>
+
+    <!-- Main Exam Container -->
+    <div id="exam-wrapper" class="flex-1 flex flex-col h-full bg-white opacity-0 pointer-events-none transition-opacity duration-1000">
+        <!-- Header -->
+        <header class="bg-slate-900 text-white px-8 py-5 flex justify-between items-center shadow-md z-10 shrink-0">
+            <div>
+                <h2 id="main-title" class="font-black text-xl tracking-tight leading-none mb-1">—</h2>
+                <p id="main-subject" class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest">—</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <!-- Violations Counter -->
+                <div class="bg-red-900/50 border border-red-500/30 px-6 py-2 rounded-xl flex items-center gap-3">
+                    <span class="material-symbols-outlined text-red-400">gavel</span>
+                    <div>
+                        <p class="text-[9px] uppercase tracking-widest text-red-300 font-bold leading-none mb-0.5">Inactivity Strikes</p>
+                        <p id="violation-display" class="font-black text-2xl font-mono leading-none text-white tracking-widest">0</p>
+                    </div>
+                </div>
+
+                <!-- Timer -->
+                <div class="bg-indigo-900/50 border border-indigo-500/30 px-6 py-2 rounded-xl flex items-center gap-3">
+                    <span class="material-symbols-outlined text-indigo-400 animate-pulse">timer</span>
+                    <div>
+                        <p class="text-[9px] uppercase tracking-widest text-indigo-300 font-bold leading-none mb-0.5">Time Remaining</p>
+                        <p id="time-display" class="font-black text-2xl font-mono leading-none text-white tracking-widest">00:00:00</p>
+                    </div>
+                </div>
+                
+                <button id="finish-exam-btn" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-lg shadow-indigo-900/20">
+                    Complete Assessment
+                </button>
+            </div>
+        </header>
+
+        <!-- Question Body -->
+        <main class="flex-1 overflow-y-auto p-8 relative" id="questions-viewport">
+            <div class="max-w-4xl mx-auto space-y-12 pb-32" id="questions-container">
+                <p class="text-center text-slate-400 italic">Compiling Assessment Metrics...</p>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="./assets/js/exam.js"></script>
+</body>
+</html>
